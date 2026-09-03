@@ -1,0 +1,182 @@
+[
+  {
+    "pde": "heat",
+    "magnitude": 1.0,
+    "w1_support": 0.0009010748024716196,
+    "tv_support": 0.12915765008175242,
+    "w1_tail": 0.0,
+    "tv_tail": 0.0,
+    "distortion_ratio": 901074802471.6195
+  },
+  {
+    "pde": "heat",
+    "magnitude": 2.5,
+    "w1_support": 0.0014152889626881866,
+    "tv_support": 0.20286373129738441,
+    "w1_tail": 0.0,
+    "tv_tail": 0.0,
+    "distortion_ratio": 1415288962688.1865
+  },
+  {
+    "pde": "heat",
+    "magnitude": 5.0,
+    "w1_support": 0.0015651496079694925,
+    "tv_support": 0.22434435502715339,
+    "w1_tail": 0.0,
+    "tv_tail": 0.0,
+    "distortion_ratio": 1565149607969.4924
+  },
+  {
+    "pde": "heat",
+    "magnitude": 10.0,
+    "w1_support": 0.0015787800982710208,
+    "tv_support": 0.22629811301925196,
+    "w1_tail": 0.0,
+    "tv_tail": 0.0,
+    "distortion_ratio": 1578780098271.0208
+  },
+  {
+    "pde": "heat",
+    "magnitude": 20.0,
+    "w1_support": 0.0015788727408469342,
+    "tv_support": 0.22631139215808652,
+    "w1_tail": 0.0,
+    "tv_tail": 0.0,
+    "distortion_ratio": 1578872740846.934
+  },
+  {
+    "pde": "wave",
+    "magnitude": 1.0,
+    "w1_support": 1.4968017888851888e-13,
+    "tv_support": 1.530003813648688e-11,
+    "w1_tail": 0.0,
+    "tv_tail": 0.0,
+    "distortion_ratio": 149.68017888851887
+  },
+  {
+    "pde": "wave",
+    "magnitude": 2.5,
+    "w1_support": 2.1735175047150686e-13,
+    "tv_support": 2.2217422003282298e-11,
+    "w1_tail": 0.0,
+    "tv_tail": 0.0,
+    "distortion_ratio": 217.35175047150685
+  },
+  {
+    "pde": "wave",
+    "magnitude": 5.0,
+    "w1_support": 2.351953175513395e-13,
+    "tv_support": 2.404119142604551e-11,
+    "w1_tail": 0.0,
+    "tv_tail": 0.0,
+    "distortion_ratio": 235.19531755133946
+  },
+  {
+    "pde": "wave",
+    "magnitude": 10.0,
+    "w1_support": 2.367786153305299e-13,
+    "tv_support": 2.4203108143729128e-11,
+    "w1_tail": 0.0,
+    "tv_tail": 0.0,
+    "distortion_ratio": 236.77861533052987
+  },
+  {
+    "pde": "wave",
+    "magnitude": 20.0,
+    "w1_support": 2.367881909652676e-13,
+    "tv_support": 2.4204259159728994e-11,
+    "w1_tail": 0.0,
+    "tv_tail": 0.0,
+    "distortion_ratio": 236.78819096526757
+  },
+  {
+    "pde": "advection_diffusion",
+    "magnitude": 1.0,
+    "w1_support": 5.639416820609843e-13,
+    "tv_support": 4.0362585286024e-11,
+    "w1_tail": 0.0,
+    "tv_tail": 0.0,
+    "distortion_ratio": 563.9416820609842
+  },
+  {
+    "pde": "advection_diffusion",
+    "magnitude": 2.5,
+    "w1_support": 8.189121193181307e-13,
+    "tv_support": 5.861133759916919e-11,
+    "w1_tail": 0.0,
+    "tv_tail": 0.0,
+    "distortion_ratio": 818.9121193181306
+  },
+  {
+    "pde": "advection_diffusion",
+    "magnitude": 5.0,
+    "w1_support": 8.861346568578915e-13,
+    "tv_support": 6.342258287763757e-11,
+    "w1_tail": 0.0,
+    "tv_tail": 0.0,
+    "distortion_ratio": 886.1346568578914
+  },
+  {
+    "pde": "advection_diffusion",
+    "magnitude": 10.0,
+    "w1_support": 8.921029139905265e-13,
+    "tv_support": 6.384987045464352e-11,
+    "w1_tail": 0.0,
+    "tv_tail": 0.0,
+    "distortion_ratio": 892.1029139905264
+  },
+  {
+    "pde": "advection_diffusion",
+    "magnitude": 20.0,
+    "w1_support": 8.921430505311798e-13,
+    "tv_support": 6.385278330978852e-11,
+    "w1_tail": 0.0,
+    "tv_tail": 0.0,
+    "distortion_ratio": 892.1430505311797
+  },
+  {
+    "pde": "burgers",
+    "magnitude": 1.0,
+    "w1_support": 2.0227954406820016e-06,
+    "tv_support": 0.001542904483277397,
+    "w1_tail": 0.0,
+    "tv_tail": 0.0,
+    "distortion_ratio": 2022795440.6820014
+  },
+  {
+    "pde": "burgers",
+    "magnitude": 2.5,
+    "w1_support": 2.939397502154527e-06,
+    "tv_support": 0.0022420505272041286,
+    "w1_tail": 0.0,
+    "tv_tail": 0.0,
+    "distortion_ratio": 2939397502.1545267
+  },
+  {
+    "pde": "burgers",
+    "magnitude": 5.0,
+    "w1_support": 3.1812648518091892e-06,
+    "tv_support": 0.002426536912053968,
+    "w1_tail": 0.0,
+    "tv_tail": 0.0,
+    "distortion_ratio": 3181264851.809189
+  },
+  {
+    "pde": "burgers",
+    "magnitude": 10.0,
+    "w1_support": 3.2027525386246187e-06,
+    "tv_support": 0.002442926828529858,
+    "w1_tail": 0.0,
+    "tv_tail": 0.0,
+    "distortion_ratio": 3202752538.6246185
+  },
+  {
+    "pde": "burgers",
+    "magnitude": 20.0,
+    "w1_support": 3.2028982994641416e-06,
+    "tv_support": 0.0024430380088540124,
+    "w1_tail": 0.0,
+    "tv_tail": 0.0,
+    "distortion_ratio": 3202898299.4641414
+  }
+]

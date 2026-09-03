@@ -1,0 +1,27 @@
+{
+    "n_models": 60,
+    "e_global_vs_w1": {
+        "pearson_r": 0.8514927444168836,
+        "p_pearson": 6.672517293974894e-18,
+        "spearman_rho": 0.8495693248124481,
+        "p_spearman": 9.423463124222298e-18
+    },
+    "e_posterior_vs_w1": {
+        "pearson_r": 0.8732150475225354,
+        "p_pearson": 9.311317510288607e-20,
+        "spearman_rho": 0.864629063628786,
+        "p_spearman": 5.502134906533228e-19
+    },
+    "rms_posterior_vs_w1": {
+        "pearson_r": 0.8732143716562448,
+        "p_pearson": 9.312666544602938e-20,
+        "spearman_rho": 0.864629063628786,
+        "p_spearman": 5.502134906533228e-19
+    },
+    "likelihood_perturbation_vs_w1": {
+        "pearson_r": 0.9190548255245922,
+        "p_pearson": 3.9880750460855257e-25,
+        "spearman_rho": 0.8409558210614062,
+        "p_spearman": 4.177396271895242e-17
+    }
+}

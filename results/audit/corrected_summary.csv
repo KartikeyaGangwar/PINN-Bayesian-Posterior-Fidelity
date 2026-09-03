@@ -1,0 +1,9 @@
+claim_topic,verified_value,audit_verdict,notes
+Phase I Baseline W1,2.227e-3 +/- 4.413e-4,VERIFIED_ACCURATE,Empirical Wasserstein distance from 10 independent noise realizations.
+Phase I Control Noise Floor,4.786e-4 +/- 1.326e-4,VERIFIED_ACCURATE,Exact-vs-Exact MCMC stochastic sampling discrepancy floor.
+Phase I BFR (Point Ratio),4.86 +/- 1.16,SUPPORTED_WITH_QUALIFICATION,Represents ratio over empirical MCMC discrepancy; not a formal hypothesis test p-value.
+Phase II Non-Monotonicity,Observed at L1/L2 and L5/L6,VERIFIED_MECHANISTIC,Confirmed by parameter-space error localization where tail error does not impact posterior.
+Phase III Localization Dominance,"PINN-A (57% global, 2.58% post) -> W1 1.23e-3",VERIFIED_ACCURATE,Posterior-region error dominates over prior-tail error by over 10x.
+Phase V Noise Modulation,sigma=0.001 (BFR 23.4) to sigma=0.100 (BFR 0.95),VERIFIED_ACCURATE,"High noise expands posterior variance, making surrogate bias negligible relative to posterior width."
+Phase VI/VII Concentration Scaling,r = +0.9573 (1/std vs BFR),VERIFIED_ACCURATE,Reconfirmed across M=10 to M=320.
+Phase IX Adaptive Gain,88.5% BFR reduction (Stage 0 -> Stage 1),SUPPORTED_WITH_QUALIFICATION,Progression from 15s pilot to targeted refinement; budget must be stated explicitly.

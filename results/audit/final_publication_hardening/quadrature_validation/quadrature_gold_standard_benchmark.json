@@ -1,0 +1,36 @@
+{
+    "grid_points": 10000,
+    "exact_posterior": {
+        "mean": 0.5067596182118136,
+        "std": 0.005632871991566578,
+        "map": 0.5066406640664066
+    },
+    "pinn_posterior": {
+        "mean": 0.5046479869838575,
+        "std": 0.005673340435778101,
+        "map": 0.5045504550455046
+    },
+    "shifts": {
+        "mean_shift": -0.002111631227956101,
+        "std_shift": 4.04684442115227e-05,
+        "map_shift": -0.0020902090209020674
+    },
+    "continuous_discrepancies": {
+        "wasserstein_1_quadrature": 0.00211163122795621,
+        "kl_divergence": 0.06911357018375648,
+        "js_divergence": 0.017199963290432052,
+        "total_variation": 0.14847316111122036
+    },
+    "likelihood_perturbation": {
+        "l1_prior_weighted": 9.130182197142057,
+        "l1_posterior_weighted": 4.559826735606591,
+        "max_abs_in_posterior_region": 5.807012252629846
+    },
+    "mcmc_vs_quadrature_comparison": {
+        "w1_quadrature": 0.00211163122795621,
+        "w1_mcmc": 0.0021071099168425583,
+        "mcmc_quad_relative_diff": 0.002141146168797557,
+        "calibrated_bfr_quadrature": 3.6493716202359003,
+        "calibrated_bfr_mcmc": 3.641557782172714
+    }
+}

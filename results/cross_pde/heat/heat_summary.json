@@ -1,0 +1,21 @@
+{
+  "pde": "heat",
+  "pde_class": "Parabolic Diffusion",
+  "n_models": 15,
+  "r_global": 0.8873046817017253,
+  "rho_global": 0.982142857142857,
+  "r_posterior": 0.8961624405882199,
+  "rho_posterior": 0.9714285714285713,
+  "r_loglik": 0.9554023647820534,
+  "rho_loglik": 0.9964285714285712,
+  "r_collinearity": 0.9982133537467389,
+  "williams_ep_eg_t": 1.2027444485183776,
+  "williams_ep_eg_p": 0.2522696718032815,
+  "williams_lik_eg_t": 3.3910383035080187,
+  "williams_lik_eg_p": 0.005357712250231517,
+  "pert_w1_support": 0.0015651496079694925,
+  "pert_kl_support": 0.2447816390094817,
+  "pert_w1_tail": 0.0,
+  "pert_kl_tail": -5.173463017748281e-17,
+  "distortion_ratio": 1565149607969.4924
+}

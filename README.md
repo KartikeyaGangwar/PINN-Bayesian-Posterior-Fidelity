@@ -1,0 +1,216 @@
+# Parameter-Space Error Localization and Posterior Fidelity of Physics-Informed Neural Network Forward Surrogates in Bayesian Inverse Problems
+
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
+[![Test Suite](https://img.shields.io/badge/pytest-42%2F42%20passed-brightgreen.svg)](tests/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Status: Submission Ready](https://img.shields.io/badge/Status-Submission%20Ready-success.svg)](#)
+
+Official open-source research repository and reproducibility suite for the manuscript:  
+**"Parameter-Space Error Localization and Posterior Fidelity of Physics-Informed Neural Network Forward Surrogates in Bayesian Inverse Problems"**
+
+---
+
+## 🔬 Scientific Overview & Theoretical Foundations
+
+In Bayesian inverse problems governed by Partial Differential Equations (PDEs), forward surrogate models—such as Physics-Informed Neural Networks (PINNs)—are increasingly deployed to accelerate Markov Chain Monte Carlo (MCMC) sampling. Conventional validation practices rely almost exclusively on **uniform global forward-field error metrics** ($E_{\mathrm{global}}$), such as relative $L_2$ errors averaged uniformly across spatial, temporal, and parameter domains.
+
+This repository provides a unified theoretical, algorithmic, and empirical framework demonstrating that:
+1. **Forward error is filtered through the observation operator and likelihood**: Surrogate approximation error enters the Bayesian posterior strictly through sparse sensor projections $\Delta \mathcal{G}(\theta)$ and the likelihood functional $\Delta \log \mathcal{L}(\theta)$, which exponentially reweights parameter space according to observation consistency.
+2. **Mathematical Posterior Stability Bounds**: Under approximate forward operators on compact parameter spaces $\Theta \subset \mathbb{R}^d$, quantitative Total Variation ($d_{\mathrm{TV}}$) and Wasserstein-1 ($\mathcal{W}_1$) discrepancy bounds are proved via optimal transport maximal coupling and centered Kantorovich-Rubinstein duality:
+   $$\mathcal{W}_1(\pi, \widehat{\pi}) \le \mathrm{diam}(\Theta) \cdot d_{\mathrm{TV}}(\pi, \widehat{\pi}) \le \frac{\mathrm{diam}(\Theta)}{2}\left[\exp(2R\varepsilon + \varepsilon^2) - 1\right] = \mathcal{O}(\sigma_{\mathrm{noise}}^{-2})$$
+3. **Parameter-Space Error Localization**: Errors situated inside the active posterior support $\Omega_{\mathrm{supp}}$ govern posterior distortion, whereas identical errors in unvisited prior tails produce zero detectable discrepancy at continuous quadrature precision (distortion ratios $> 10^2$ to $> 10^{12}$).
+4. **Diagnostic Predictive Superiority in Diffusion-Dominated Dynamics**: Integrated log-likelihood perturbation $\|\Delta \log \mathcal{L}\|_{L_1}$ and posterior-weighted forward error $E_{\mathrm{posterior}}$ provide statistically superior predictors of posterior discrepancy over conventional global error ($p_{\mathrm{Bonf}} < 10^{-12}$) in parabolic diffusion and transport-diffusion systems.
+5. **Bayesian Fidelity Ratio (BFR)**: A dimensionless MCMC sampling noise-floor calibration framework ($\mathrm{BFR}_{99} \approx 1.63 - 2.28$) establishing an empirical threshold below which apparent surrogate bias cannot be distinguished from finite-sample Monte Carlo stochasticity.
+
+```
+┌─────────────────────────────────────────────────────────┐
+│              FORWARD SURROGATE ERROR                    │
+│   e(θ) = || u_PINN(·; θ) - u_exact(·; θ) ||_L2(Ω)       │
+└───────────────────────────┬─────────────────────────────┘
+                            │
+                            ▼  [Observation Operator H]
+┌─────────────────────────────────────────────────────────┐
+│             SENSOR-PROJECTED SURROGATE ERROR            │
+│   ΔG(θ) = H[F_PINN(θ)] - H[F_exact(θ)]                 │
+└───────────────────────────┬─────────────────────────────┘
+                            │
+                            ▼  [Measurement Noise σ]
+┌─────────────────────────────────────────────────────────┐
+│             LOG-LIKELIHOOD PERTURBATION                 │
+│   Δ log L(θ) = -1/(2σ²) [ ||y - G_PINN||² - ||y - G||² ]│
+└───────────────────────────┬─────────────────────────────┘
+                            │
+                            ▼  [Bayesian Posterior Reweighting]
+┌─────────────────────────────────────────────────────────┐
+│             POSTERIOR WASSERSTEIN DISCREPANCY           │
+│   W₁(π, π̂) = ∫ | F_exact(θ) - F_PINN(θ) | dθ            │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 📊 Benchmark Systems & Cross-Dynamical Results ($N=240$ Ensemble)
+
+The empirical validation suite evaluates a symmetric cross-dynamical design of $N=60$ independently trained surrogate realizations arranged across a prescribed 6-level convergence sweep (6 levels $\times$ 10 random seeds) per PDE ($N=240$ total models across four distinct physical dynamical classes):
+
+| Benchmark PDE System | Physical Mechanism | Exact Parameter $\theta^*$ | Effect Size $\Delta r$ | Williams Test ($p_{\mathrm{Bonf}}$) | Categorical ANCOVA ($p_{\mathrm{Bonf}}$) |
+|---|---|:---:|:---:|:---:|:---:|
+| **1D Heat Equation** | Linear Parabolic Diffusion | $\alpha^* = 0.50$ | $\mathbf{+0.0971}$ | $t = +10.12 \ (p = 1.95 \times 10^{-13})$ | $t = +13.62 \ (p = 7.33 \times 10^{-18})$ |
+| **1D Wave Equation** | Hyperbolic Dynamics | $c^* = 1.00$ | $+0.0052$ | $t = +0.27 \ (p = 1.0000, \text{NS})$ | $t = -0.75 \ (p = 1.0000, \text{NS})$ |
+| **1D Advection-Diffusion** | Directional Transport-Diffusion | $v^* = 1.00$ | $\mathbf{+0.0902}$ | $t = +13.83 \ (p < 10^{-14})$ | $t = +10.65 \ (p = 1.06 \times 10^{-13})$ |
+| **1D Viscous Burgers** | Nonlinear Shock Steepening | $\nu^* = 0.05$ | $+0.0035$ | $t = +0.15 \ (p = 1.0000, \text{NS})$ | $t = +2.69 \ (p = 0.1144, \text{NS})$ |
+
+*All benchmark problems feature closed-form analytical reference solutions verified to machine precision ($< 10^{-15}$ residual) to isolate surrogate error from reference numerical discretization error.*
+
+---
+
+## 🛠️ Practical Three-Step Validation Protocol
+
+For practitioners deploying neural network forward surrogates in Bayesian inverse problems:
+1. **Avoid Sole Reliance on Global Forward Norms**: Global $L_2$ error ($E_{\mathrm{global}}$) averages error uniformly over uninformative parameter space and correlates poorly with localized posterior distortion.
+2. **Execute Rapid Pilot-Informed Posterior Weighting**: Run a fast preliminary inversion (e.g., maximum a posteriori optimization or short pilot MCMC chains, execution time $< 0.1\,\mathrm{s}$) to identify the estimated posterior support $\widehat{\Omega}_{\mathrm{supp}}$, and evaluate posterior-weighted error $E_{\mathrm{posterior}}$ or integrated likelihood perturbation $\|\Delta \log \mathcal{L}\|_{L_1}$ (validation overhead $< 0.02\,\mathrm{s}$, $< 0.2\%$ of surrogate training time).
+3. **Calibrate Against Empirical MCMC Sampling Noise**: When comparing surrogate posteriors using MCMC, run paired Exact-vs-Exact control chains to compute the baseline sampling noise floor $\overline{\mathcal{W}}_1^{\mathrm{ctrl}}$. Ensure surrogate discrepancy satisfies $\mathrm{BFR} > \mathrm{BFR}_{99} \approx 1.63 - 2.28$ to prevent false discoveries of surrogate bias.
+
+---
+
+## 📁 Repository Structure
+
+```
+PINN-Bayesian-Posterior-Fidelity/
+├── bayesian/                           # Bayesian MCMC inference framework
+│   ├── likelihood.py                   # Gaussian log-likelihood & misfit functionals
+│   ├── metropolis_hastings.py          # Metropolis-Hastings MCMC sampling engine
+│   ├── prior.py                        # Prior distributions (Uniform, Gaussian, Truncated)
+│   ├── proposal.py                     # Random walk proposal generators
+│   ├── forward_operator.py             # Exact & PINN surrogate forward evaluation interfaces
+│   ├── observation_operator.py         # Space-time sensor projection operators
+│   ├── posterior.py                    # Posterior extraction & moment analysis
+│   ├── two_chain_sampler.py            # Coupled two-chain (Exact-vs-PINN, Exact-vs-Exact) sampler
+│   ├── two_chain_analysis.py           # Observational distance diagnostics & W1 computations
+│   ├── two_chain_plots.py              # Visualizations for paired MCMC chain comparisons
+│   └── diagnostics.py                  # MCMC convergence diagnostics (ESS, autocorrelation)
+├── experiments/                        # Experimental runners & benchmark definitions
+│   ├── cross_pde/                      # Cross-PDE benchmarking suite (N=240 ensemble)
+│   │   ├── pde_definitions.py          # Analytical benchmark PDEs & sensor layouts
+│   │   ├── trainer.py                  # Parametric PINN trainer (Adam + L-BFGS)
+│   │   ├── runner.py                   # Cross-PDE batch execution engine
+│   │   ├── plots.py                    # Publication figure generation utilities
+│   │   ├── run_comprehensive_jcp_hardening.py # Master 240-model reproducibility runner
+│   │   └── run_audit_and_d5_stress_test.py    # ANCOVA, Multiple testing, & d=5 stress test
+│   └── metrics.py                      # E_global, E_posterior, W1, and BFR implementations
+├── paper/                              # LaTeX manuscript source, figures, & proofs
+│   ├── manuscript.tex                  # Master LaTeX document (28 pages)
+│   ├── manuscript.pdf                  # Compiled publication-ready PDF (28 pages, 2.4 MB)
+│   ├── title_abstract.tex              # Title, author metadata, abstract, & keywords
+│   ├── sec_01_introduction.tex         # Literature review & research positioning
+│   ├── sec_02_problem_formulation.tex  # Problem setup & theoretical stability bounds
+│   ├── sec_03_diagnostic_framework.tex # Error metrics & BFR calibration framework
+│   ├── sec_04_benchmark_problems.tex   # Benchmark PDE regimes & experimental design
+│   ├── sec_05_results.tex              # Comprehensive empirical results & ANCOVA
+│   ├── sec_06_discussion.tex           # Mechanistic interpretation & validation protocol
+│   ├── sec_07_conclusion.tex           # Summary of findings & data availability
+│   ├── appendix_proofs.tex             # Complete mathematical proofs (Theorems 2.1, 2.3)
+│   └── figures/                        # High-resolution publication-quality figures
+├── results/                            # Numerical datasets & validation summaries
+│   └── cross_pde_n60/                  # Complete datasets for all 240 surrogate models
+│       ├── all_240models_raw.csv       # Raw metrics for all 240 trained surrogates
+│       ├── categorical_ancova_results.csv # 12-test ANCOVA multiplicity table
+│       ├── heat_d5_summary.json        # 5D high-dimensional stress test dataset
+│       └── bfr_sensitivity_analysis.json # BFR calibration sensitivity sweep
+└── tests/                              # Automated unit test suite (42 test functions)
+    ├── test_audit_and_statistical_rigor.py # Williams formula, ANCOVA, OT coupling proofs
+    ├── test_cross_pde_suite.py         # Analytical PDE residual verifications
+    ├── test_heat_equation_pinn.py      # Autograd physics loss & architecture tests
+    ├── test_research_metrics.py        # Error metrics & Wasserstein implementations
+    └── test_two_chain_mcmc.py          # MCMC stochastic control & consistency tests
+```
+
+---
+
+## 🚀 Installation & Quickstart
+
+### 1. Environment Setup
+
+Clone the repository and install dependencies:
+
+```bash
+git clone https://github.com/KartikeyaGangwar/PINN-Bayesian-Posterior-Fidelity.git
+cd PINN-Bayesian-Posterior-Fidelity
+pip install -r requirements.txt
+```
+
+*Requirements: Python 3.10+, PyTorch 2.0+, NumPy, SciPy, Matplotlib, Pandas, PyTest.*
+
+---
+
+### 2. Run Automated Verification Suite (42 / 42 Passing)
+
+Verify mathematical residuals, metrics, statistical formulas, and MCMC samplers:
+
+```bash
+python -m pytest tests/ -v
+```
+
+Expected output:
+```
+============================= 42 passed in 13.5s =============================
+```
+
+---
+
+### 3. Reproduce Full Cross-PDE Benchmark ($N=240$ Models)
+
+Train the balanced 240-model surrogate ensemble across all four PDE regimes, compute continuous quadrature Wasserstein distances, evaluate likelihood perturbations, and generate all publication figures:
+
+```bash
+python experiments/cross_pde/run_comprehensive_jcp_hardening.py
+```
+
+---
+
+### 4. Run Categorical ANCOVA & $d=5$ High-Dimensional Stress Test
+
+Execute the fixed-effects Categorical ANCOVA, within-tier subgroup analysis, family-wise multiple testing corrections, and the 5-dimensional parametric thermal diffusion stress test:
+
+```bash
+python experiments/cross_pde/run_audit_and_d5_stress_test.py
+```
+
+---
+
+### 5. Compile Master LaTeX Manuscript
+
+Compile the complete 28-page research manuscript:
+
+```bash
+cd paper
+pdflatex -interaction=nonstopmode manuscript.tex
+bibtex manuscript
+pdflatex -interaction=nonstopmode manuscript.tex
+pdflatex -interaction=nonstopmode manuscript.tex
+```
+
+---
+
+## 📖 Citation
+
+If you find this methodology, diagnostic validation protocol, or codebase useful in your research, please cite:
+
+```bibtex
+@article{pinn_bayesian_fidelity_2026,
+  title={Parameter-Space Error Localization and Posterior Fidelity of Physics-Informed Neural Network Forward Surrogates in Bayesian Inverse Problems},
+  author={Anonymous Authors},
+  journal={SIAM/ASA Journal on Uncertainty Quantification},
+  volume={--},
+  number={--},
+  pages={--},
+  year={2026}
+}
+```
+
+---
+
+## 📜 License
+
+This project is open-source and licensed under the [MIT License](LICENSE).

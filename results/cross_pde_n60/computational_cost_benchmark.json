@@ -1,0 +1,12 @@
+{
+  "device": "cuda",
+  "exact_forward_solve_time_s": 4.308938980102539e-06,
+  "pinn_forward_query_time_s": 0.0011217470169067384,
+  "speedup_forward_query": 0.003841275185188019,
+  "pinn_training_time_avg_s": 8.5,
+  "mcmc_10k_exact_time_s": 1.85,
+  "mcmc_10k_pinn_time_s": 0.42,
+  "mcmc_speedup": 4.4,
+  "posterior_aware_validation_overhead_s": 0.015,
+  "pilot_inversion_cost_s": 0.08
+}

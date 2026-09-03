@@ -1,0 +1,21 @@
+{
+  "pde": "wave",
+  "pde_class": "Hyperbolic Wave",
+  "n_models": 15,
+  "r_global": 0.5288107279568772,
+  "rho_global": 0.8285714285714284,
+  "r_posterior": 0.5317352977880829,
+  "rho_posterior": 0.8107142857142855,
+  "r_loglik": 0.6331144679851481,
+  "rho_loglik": 0.8571428571428571,
+  "r_collinearity": 0.9967946587838703,
+  "williams_ep_eg_t": 0.1494284056490675,
+  "williams_ep_eg_p": 0.8836975933194069,
+  "williams_lik_eg_t": 1.7049698111091465,
+  "williams_lik_eg_p": 0.11392815812709345,
+  "pert_w1_support": 2.351953175513395e-13,
+  "pert_kl_support": 2.3226446246712735e-11,
+  "pert_w1_tail": 0.0,
+  "pert_kl_tail": -1.7789235489593173e-17,
+  "distortion_ratio": 235.19531755133946
+}

@@ -1,0 +1,117 @@
+{
+    "metadata": {
+        "experiment_type": "research (Exact vs PINN)",
+        "n_total_samples": 5000,
+        "burn_in": 1000,
+        "n_post_burnin_samples": 4000,
+        "common_initial_alpha": 0.2714035483838157,
+        "runtime_seconds": 74.33956980705261,
+        "acceptance_rate_E": 0.1492,
+        "acceptance_rate_A": 0.1302
+    },
+    "distance_diagnostics": {
+        "initial_distance": 0.10393585653077386,
+        "mean_distance_full": 0.0063523111504112575,
+        "max_distance_full": 0.12972021386566385,
+        "final_distance": 0.005855863677572293,
+        "mean_distance_post_burnin": 0.006232689746139302,
+        "mean_log_posterior_diff": 5.179122732870617,
+        "max_log_posterior_diff": 1079.6707574800216
+    },
+    "divergence_profile": {
+        "linear_slope_per_step": -2.712148801838363e-07,
+        "linear_r2": 0.004349269644861394,
+        "overall_trend": "stable"
+    },
+    "diagnostic_crossings": {
+        "eps_0.005": {
+            "diagnostic_threshold": 0.005,
+            "first_crossing_step": 0,
+            "sustained_crossing_step": 0,
+            "pre_crossing_steps": 0,
+            "pre_crossing_percentage": 0.0
+        },
+        "eps_0.010": {
+            "diagnostic_threshold": 0.01,
+            "first_crossing_step": 0,
+            "sustained_crossing_step": 0,
+            "pre_crossing_steps": 0,
+            "pre_crossing_percentage": 0.0
+        },
+        "eps_0.020": {
+            "diagnostic_threshold": 0.02,
+            "first_crossing_step": 0,
+            "sustained_crossing_step": 0,
+            "pre_crossing_steps": 0,
+            "pre_crossing_percentage": 0.0
+        },
+        "eps_0.030": {
+            "diagnostic_threshold": 0.03,
+            "first_crossing_step": 0,
+            "sustained_crossing_step": 0,
+            "pre_crossing_steps": 0,
+            "pre_crossing_percentage": 0.0
+        },
+        "eps_0.050": {
+            "diagnostic_threshold": 0.05,
+            "first_crossing_step": 0,
+            "sustained_crossing_step": 0,
+            "pre_crossing_steps": 0,
+            "pre_crossing_percentage": 0.0
+        },
+        "eps_0.080": {
+            "diagnostic_threshold": 0.08,
+            "first_crossing_step": 0,
+            "sustained_crossing_step": 0,
+            "pre_crossing_steps": 0,
+            "pre_crossing_percentage": 0.0
+        },
+        "eps_0.100": {
+            "diagnostic_threshold": 0.1,
+            "first_crossing_step": 0,
+            "sustained_crossing_step": null,
+            "pre_crossing_steps": 0,
+            "pre_crossing_percentage": 0.0
+        },
+        "eps_0.150": {
+            "diagnostic_threshold": 0.15,
+            "first_crossing_step": null,
+            "sustained_crossing_step": null,
+            "pre_crossing_steps": 5000,
+            "pre_crossing_percentage": 100.0
+        }
+    },
+    "marginal_posterior_statistics": {
+        "exact_chain": {
+            "alpha": {
+                "mean": 0.5069335296282179,
+                "std": 0.005373812784856531,
+                "median": 0.5067339076202891,
+                "cred_95": [
+                    0.4965367644112715,
+                    0.5184170311264478
+                ],
+                "ess": 458.7742436802955
+            }
+        },
+        "approx_chain": {
+            "alpha": {
+                "mean": 0.5046738495242888,
+                "std": 0.005169644131852056,
+                "median": 0.5047126820065272,
+                "cred_95": [
+                    0.4944070180765174,
+                    0.5145889126123697
+                ],
+                "ess": 337.32582468779077
+            }
+        }
+    },
+    "distribution_discrepancies": {
+        "wasserstein_1_distance": 0.002267217162004699,
+        "ks_statistic": 0.2005,
+        "ks_p_value": 9.985379590311687e-71,
+        "mean_bias": -0.0022596801039290737,
+        "std_ratio": 0.9620067424788622
+    }
+}

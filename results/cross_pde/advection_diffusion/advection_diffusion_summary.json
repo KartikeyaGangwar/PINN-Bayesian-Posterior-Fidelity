@@ -1,0 +1,21 @@
+{
+  "pde": "advection_diffusion",
+  "pde_class": "Transport + Diffusion",
+  "n_models": 15,
+  "r_global": 0.8376599987703779,
+  "rho_global": 0.8642857142857141,
+  "r_posterior": 0.8519930257476708,
+  "rho_posterior": 0.825,
+  "r_loglik": 0.8810423261305206,
+  "rho_loglik": 0.8821428571428571,
+  "r_collinearity": 0.9985492518530092,
+  "williams_ep_eg_t": 1.9881621450812785,
+  "williams_ep_eg_p": 0.07009465293035722,
+  "williams_lik_eg_t": 1.6093432123415645,
+  "williams_lik_eg_p": 0.13351689011265333,
+  "pert_w1_support": 8.861346568578915e-13,
+  "pert_kl_support": 6.12733400499799e-11,
+  "pert_w1_tail": 0.0,
+  "pert_kl_tail": -2.5552835055972487e-17,
+  "distortion_ratio": 886.1346568578914
+}

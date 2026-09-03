@@ -1,0 +1,21 @@
+{
+  "pde": "burgers",
+  "pde_class": "Nonlinear Convection-Diffusion",
+  "n_models": 15,
+  "r_global": 0.7569444016614423,
+  "rho_global": 0.825,
+  "r_posterior": 0.7787290106135722,
+  "rho_posterior": 0.8107142857142855,
+  "r_loglik": 0.767820972832862,
+  "rho_loglik": 0.8285714285714284,
+  "r_collinearity": 0.9908848416086874,
+  "williams_ep_eg_t": 0.9046460892856241,
+  "williams_ep_eg_p": 0.38345582420499236,
+  "williams_lik_eg_t": 0.2477952867993645,
+  "williams_lik_eg_p": 0.8084820688662766,
+  "pert_w1_support": 3.1812648518091892e-06,
+  "pert_kl_support": 0.00234702035333337,
+  "pert_w1_tail": 0.0,
+  "pert_kl_tail": -5.416584199314665e-18,
+  "distortion_ratio": 3181264851.809189
+}

@@ -1,0 +1,33 @@
+{
+    "experiment_type": "research (Exact vs PINN)",
+    "n_samples": 5000,
+    "burn_in": 1000,
+    "runtime_seconds": 74.33956980705261,
+    "alpha_0": 0.2714035483838157,
+    "proposal_scale": 0.05,
+    "noise_std": 0.01,
+    "acceptance_rate_E": 0.1492,
+    "acceptance_rate_A": 0.1302,
+    "mean_distance_full": 0.0063523111504112575,
+    "max_distance_full": 0.12972021386566385,
+    "final_distance": 0.005855863677572293,
+    "mean_distance_post_burnin": 0.006232689746139302,
+    "posterior_E": {
+        "mean_alpha": 0.5069335296282179,
+        "std_alpha": 0.005373812784856531,
+        "median_alpha": 0.5067339076202891,
+        "ci_95": [
+            0.4965367644112715,
+            0.5184170311264478
+        ]
+    },
+    "posterior_A": {
+        "mean_alpha": 0.5046738495242888,
+        "std_alpha": 0.005169644131852056,
+        "median_alpha": 0.5047126820065272,
+        "ci_95": [
+            0.4944070180765174,
+            0.5145889126123697
+        ]
+    }
+}
