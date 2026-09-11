@@ -25,6 +25,7 @@ paper/
 *.pdf
 *notes*
 *personal*
+technical_review/
 
 # OS files
 Thumbs.db
