@@ -1,7 +1,7 @@
 """
 Master Publication Vector Figure Generator for Entire Manuscript
 ================================================================
-Generates all 8 publication figures in vector PDF and high-resolution raster formats:
+Generates all 9 publication figures in vector PDF and high-resolution raster formats:
 1. Fig 16: MCMC Noise Floor Distribution (Continuous Log-Normal PDF & Thresholds)
 2. Fig 18: Noise Modulation Sweep (Continuous Asymptotic Scalings)
 3. Fig 21: Cross-PDE Diagnostic Hierarchy (Continuous Regression Bands)
@@ -10,6 +10,7 @@ Generates all 8 publication figures in vector PDF and high-resolution raster for
 6. Fig 24: Actual PINN Error Transfer Traces (Continuous Densities & Perturbations)
 7. Fig 25: Pure PINN Ablation (Continuous Quadrature Invariance r = 0.9994)
 8. Fig 26: 2D Incompressible Navier-Stokes Validation (Streamlines, Continuous Crossover)
+9. Fig 27: 5D Multi-Mode Diffusion Benchmark Validation (Space-Time Field, Continuous Crossover, Marginals)
 
 Formatting Standards Enforced:
 - Exact LaTeX Computer Modern fonts via text.usetex = True
@@ -493,12 +494,20 @@ def run_all_figures():
     print("\n[7/8] Generating Figure 25...", flush=True)
     generate_fig25(repo_root)
 
-    print("\n[8/8] Generating Figure 26...", flush=True)
+    print("\n[8/9] Generating Figure 26...", flush=True)
     from experiments.cross_pde.plot_navier_stokes_2d import generate_figure_26
     generate_figure_26(
         data_dir=os.path.join(repo_root, "results", "navier_stokes_2d"),
         output_pdf=os.path.join(repo_root, "paper", "figures", "fig26_navier_stokes_2d_validation.pdf"),
         output_png=os.path.join(repo_root, "paper", "figures", "fig26_navier_stokes_2d_validation.png")
+    )
+
+    print("\n[9/9] Generating Figure 27 (5D Multi-Mode Diffusion Validation)...", flush=True)
+    from experiments.cross_pde.plot_heat_d5 import generate_figure_27
+    generate_figure_27(
+        data_dir=os.path.join(repo_root, "results", "heat_d5"),
+        output_pdf=os.path.join(repo_root, "paper", "figures", "fig27_heat_d5_validation.pdf"),
+        output_png=os.path.join(repo_root, "paper", "figures", "fig27_heat_d5_validation.png")
     )
 
     print("\n" + "=" * 70, flush=True)

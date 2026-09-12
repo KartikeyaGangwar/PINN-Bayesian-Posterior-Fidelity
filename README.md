@@ -2,7 +2,7 @@
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
-[![Test Suite](https://img.shields.io/badge/pytest-49%2F49%20passed-brightgreen.svg)](tests/)
+[![Test Suite](https://img.shields.io/badge/pytest-55%2F55%20passed-brightgreen.svg)](tests/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Official open-source research repository and computational reproducibility suite for the research article:  
@@ -59,7 +59,7 @@ This repository provides a unified theoretical, algorithmic, and empirical frame
 
 ## Benchmark Systems and Empirical Findings
 
-The empirical validation suite evaluates a comprehensive cross-dynamical benchmark suite ($N=260$ total trained surrogates across five physical dynamical classes):
+The empirical validation suite evaluates a comprehensive cross-dynamical benchmark suite ($N=280$ total trained surrogates across six physical dynamical classes):
 
 | Benchmark PDE System | Physical Mechanism | Exact Parameter $\theta^*$ | Effect Size $\Delta r$ | Williams Test ($p$-value) | Key Finding |
 |---|---|:---:|:---:|:---:|:---:|
@@ -68,6 +68,7 @@ The empirical validation suite evaluates a comprehensive cross-dynamical benchma
 | **1D Advection-Diffusion** | Directional Transport | $v^* = 1.00$ | $\mathbf{+0.0902}$ | $t = +13.83 \ (p < 10^{-14})$ | Strong likelihood coupling ($r = 0.975$) |
 | **1D Viscous Burgers** | Nonlinear Shock Wave | $\nu^* = 0.05$ | $+0.0035$ | $t = +0.15 \ (p = 1.0000, \text{NS})$ | Convective-diffusive attenuation |
 | **2D Navier-Stokes** | Incompressible Fluid Flow | $\nu^* = 0.05$ | $-0.1067$ | $t = -3.86 \ (p = 0.00127)$ | **Spatial crossover**: Field error ($r=0.848$) beats sparse likelihood |
+| **5D Multi-Mode Diffusion** | Multi-Parameter Dissipation | $\boldsymbol{\theta}^* = (0.5, 0.08, -0.05, 0.04, -0.02)$ | $-0.2964$ | $t = -2.71 \ (p = 0.0147)$ | **Dimensional crossover**: Field error ($r=0.829$) beats sparse likelihood ($r=0.532$) |
 
 *All benchmark problems feature closed-form analytical reference solutions verified to machine precision ($< 10^{-15}$ residual) to isolate surrogate error from reference numerical discretization error.*
 
@@ -109,9 +110,13 @@ PINN-Bayesian-Posterior-Fidelity/
 │   │   ├── run_statistical_ancova_and_d5.py # Categorical ANCOVA, multiplicity corrections, & 5D analysis
 │   │   ├── navier_stokes_2d.py         # 2D Navier-Stokes Taylor-Green analytical solver
 │   │   ├── run_navier_stokes_2d_campaign.py # Navier-Stokes 20-model training campaign
+│   │   ├── plot_navier_stokes_2d.py    # Figure 26 generator (streamlines, continuous crossover)
+│   │   ├── heat_d5.py                  # 5D multi-mode diffusion benchmark analytical solver
+│   │   ├── run_heat_d5_campaign.py     # 5D multi-mode diffusion 20-model training campaign
+│   │   ├── plot_heat_d5.py             # Figure 27 generator (space-time field, crossover, marginals)
 │   │   ├── pure_pinn_ablation.py       # Differential equation physics-loss ablation
-│   │   └── generate_all_publication_vector_figures.py # Master publication vector graphics generator
-│   └── metrics.py                      # E_global, E_posterior, W1, and BFR implementations
+│   │   └── generate_all_publication_vector_figures.py # Master publication vector graphics generator (9 figures)
+│   └── metrics.py                      # E_global, E_posterior, W1, SW1, and BFR implementations
 ├── results/                            # Numerical datasets & validation summaries
 │   ├── cross_pde_n60/                  # Datasets for 240 cross-dynamical surrogate models
 │   │   ├── all_240models_raw.csv       # Raw metrics for all 240 trained surrogates
@@ -123,6 +128,10 @@ PINN-Bayesian-Posterior-Fidelity/
 │   │   ├── ns2d_summary.json           # Correlation and Williams test summary
 │   │   ├── ns2d_localization_sweep.csv # 2D fluid flow error localization sweep
 │   │   └── checkpoints/                # Serialized PyTorch model checkpoints (.pt)
+│   ├── heat_d5/                        # 5D multi-mode parametric diffusion benchmark
+│   │   ├── heat_d5_20models_raw.csv    # Raw metrics for 20 5D diffusion models
+│   │   ├── heat_d5_summary.json        # Correlation and Williams test summary (d=5)
+│   │   └── checkpoints/                # Serialized PyTorch model checkpoints (.pt)
 │   ├── sensitivity_analysis/           # Robustness and sensitivity evaluation datasets
 │   │   ├── noise_sweep/                # Continuous observation noise modulation
 │   │   ├── mcmc_noise_floor/           # Dimensionless BFR sampling calibration
@@ -131,11 +140,12 @@ PINN-Bayesian-Posterior-Fidelity/
 │   │   └── non_oracle_validation/      # Budget-constrained validation analysis
 │   └── ablation/                       # Methodological ablation studies
 │       └── pure_pinn_ablation/         # Pure physics loss vs supervised comparison
-└── tests/                              # Automated unit test suite (49 test functions)
+└── tests/                              # Automated unit test suite (55 test functions)
     ├── test_cross_pde_suite.py         # Analytical PDE residual verifications
     ├── test_experiments_suite.py       # Baseline and sweep verification tests
     ├── test_heat_equation_pinn.py      # Autograd physics loss & architecture tests
     ├── test_navier_stokes_2d.py        # 2D Navier-Stokes autograd residual & W1 tests
+    ├── test_heat_d5.py                 # 5D multi-mode diffusion autograd residual & SW1 tests
     ├── test_research_metrics.py        # Error metrics & Wasserstein implementations
     ├── test_statistical_methodology.py # Williams formula, ANCOVA, OT coupling proofs
     └── test_two_chain_mcmc.py          # MCMC stochastic control & consistency tests
@@ -159,7 +169,7 @@ pip install -r requirements.txt
 
 ---
 
-### 2. Run Automated Verification Suite (49 / 49 Passing)
+### 2. Run Automated Verification Suite (55 / 55 Passing)
 
 Verify mathematical residuals, metrics, statistical formulas, and MCMC samplers:
 
@@ -169,7 +179,7 @@ python -m pytest tests/ -v
 
 Expected output:
 ```
-============================= 49 passed in 26.2s =============================
+============================= 55 passed in 12.6s =============================
 ```
 
 ---
@@ -184,9 +194,9 @@ python experiments/cross_pde/run_cross_pde_benchmark.py
 
 ---
 
-### 4. Run Categorical ANCOVA and $d=5$ High-Dimensional Benchmark
+### 4. Run Categorical ANCOVA and Statistical Multiplicity Corrections
 
-Execute the fixed-effects Categorical ANCOVA, within-tier subgroup analysis, family-wise multiple testing corrections, and the 5-dimensional parametric thermal diffusion benchmark:
+Execute the fixed-effects Categorical ANCOVA, within-tier subgroup analysis, and family-wise multiple testing corrections:
 
 ```bash
 python experiments/cross_pde/run_statistical_ancova_and_d5.py
@@ -204,9 +214,19 @@ python experiments/cross_pde/run_navier_stokes_2d_campaign.py
 
 ---
 
-### 6. Generate All Publication Vector Figures
+### 6. Reproduce 5D Multi-Mode Parametric Diffusion Benchmark
 
-Generate all publication figures in vector PDF and high-resolution format with native LaTeX fonts and horizontal bottom legends:
+Execute the 5-dimensional multi-mode diffusion campaign and evaluate the dimensional crossover:
+
+```bash
+python experiments/cross_pde/run_heat_d5_campaign.py
+```
+
+---
+
+### 7. Generate All Publication Vector Figures
+
+Generate all 9 publication figures in vector PDF and high-resolution format with native LaTeX fonts and horizontal bottom legends:
 
 ```bash
 python experiments/cross_pde/generate_all_publication_vector_figures.py
