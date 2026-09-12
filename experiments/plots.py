@@ -367,7 +367,7 @@ def generate_all_12_figures(output_dir: str = "results/research_figures"):
     fig.savefig(os.path.join(output_dir, "fig12_conceptual_framework_workflow.png"))
     plt.close()
     
-    print(f"\n[SUCCESS] Generated all 12 publication figures in {output_dir}/")
+    print(f"\nGenerated all 12 publication figures in {output_dir}/")
 
 
 if __name__ == "__main__":

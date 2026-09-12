@@ -37,7 +37,7 @@ def run_non_oracle_validation_study(
     if device is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if output_dir is None:
-        output_dir = repo_root / "results" / "audit" / "final_publication_hardening" / "non_oracle_validation"
+        output_dir = repo_root / "results" / "sensitivity_analysis" / "non_oracle_validation"
     os.makedirs(output_dir, exist_ok=True)
 
     print("==================================================================", flush=True)
@@ -300,7 +300,7 @@ def run_non_oracle_validation_study(
         json.dump(budget_eval_records, f, indent=2)
 
     print("\n==================================================================", flush=True)
-    print("NON-ORACLE EXPERIMENT COMPLETED SUCCESSFULLY", flush=True)
+    print("Non-oracle validation experiment complete.", flush=True)
     print(f"Results saved to: {output_dir}")
     print("==================================================================", flush=True)
 

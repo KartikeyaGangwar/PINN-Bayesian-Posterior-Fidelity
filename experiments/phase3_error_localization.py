@@ -1,7 +1,7 @@
 """
 Phase III & IV: Error Localization & Weighted Surrogate Diagnostics
 ===================================================================
-Constructs 3 legitimate PINNs with comparable global forward error but distinct
+Constructs 3 surrogate configurations with comparable global forward errors but distinct
 parameter-space error localization:
   PINN-A: Posterior-focused (high accuracy near alpha ~ 0.5)
   PINN-B: Uniform coverage (uniform moderate error across alpha)
@@ -42,7 +42,7 @@ from experiments.metrics import (
 
 
 def sample_targeted_parameters(strategy: str, n_samples: int = 25, seed: int = 42) -> np.ndarray:
-    """Generates legitimate parameter training samples based on strategy."""
+    """Generates parameter training samples according to spatial allocation strategy."""
     rng = np.random.RandomState(seed)
     if strategy == "pinn_a_posterior_focused":
         # 60% in [0.42, 0.58], 40% in [0.11, 2.20]

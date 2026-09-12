@@ -19,7 +19,7 @@ from parametric_surrogate.parametric_model import ParametricModifiedMLP
 def save_tier_checkpoints(output_dir: str = "results/navier_stokes_2d/checkpoints"):
     dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("=" * 65, flush=True)
-    print(f"EXPORTING NAVIER-STOKES 2D CHECKPOINTS (.pt) ON: {dev}", flush=True)
+    print(f"Exporting Navier-Stokes 2D checkpoints on device: {dev}", flush=True)
     print("=" * 65, flush=True)
 
     bench = NavierStokes2DTaylorGreenBenchmark()
@@ -102,7 +102,7 @@ def save_tier_checkpoints(output_dir: str = "results/navier_stokes_2d/checkpoint
         print(f"-> Saved: {save_path} ({os.path.getsize(save_path)} bytes) in {dt:.1f}s", flush=True)
 
     print("\n" + "=" * 65, flush=True)
-    print("ALL 5 TIER MODEL CHECKPOINTS (.pt) SUCCESSFULLY CREATED & SAVED!", flush=True)
+    print("Navier-Stokes 2D checkpoints successfully saved.", flush=True)
     print("=" * 65, flush=True)
 
 

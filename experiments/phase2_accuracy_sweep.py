@@ -1,7 +1,7 @@
 """
 Phase II: Forward Error vs Posterior Error Sweep
 ================================================
-Constructs 6 legitimate PINN accuracy levels (very poor to highly accurate)
+Constructs 6 surrogate accuracy configurations ranging from underconverged to converged
 and computes global forward metrics vs Bayesian posterior discrepancy metrics.
 """
 
@@ -43,13 +43,13 @@ def train_surrogate_level(
     device: torch.device,
     output_dir: str
 ) -> Tuple[str, ParametricModifiedMLP]:
-    """Trains or loads a legitimate surrogate level with specific configuration."""
+    """Trains or loads a surrogate model for a specific convergence tier."""
     model_path = os.path.join(output_dir, f"pinn_{level_name}.pth")
     model = ParametricModifiedMLP(n_input=3, n_output=1, n_hidden=64, n_layers=4, use_fourier=False).to(device).to(torch.float64)
     
     # If checkpoint already exists, load and return
     if os.path.exists(model_path):
-        print(f"  [CACHE] Loading pre-trained checkpoint from {model_path}", flush=True)
+        print(f"  Loading pre-trained checkpoint from {model_path}", flush=True)
         model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
         model.eval()
         return model_path, model
@@ -57,7 +57,7 @@ def train_surrogate_level(
     # If level 6 (highly accurate), load canonical weights if available
     canonical_weights = os.path.join("results", "heat_equation_pinn.pth")
     if level_name == "level6_highly_accurate" and os.path.exists(canonical_weights):
-        print(f"  [CANONICAL] Loading master weights from {canonical_weights}", flush=True)
+        print(f"  Loading reference model weights from {canonical_weights}", flush=True)
         model.load_state_dict(torch.load(canonical_weights, map_location=device, weights_only=True))
         model.eval()
         torch.save(model.state_dict(), model_path)

@@ -18,11 +18,12 @@ Official open-source research repository and computational reproducibility suite
 
 ## Scientific Overview and Theoretical Foundations
 
-In Bayesian inverse problems governed by Partial Differential Equations (PDEs), forward surrogate models—such as Physics-Informed Neural Networks (PINNs)—are deployed to accelerate Markov Chain Monte Carlo (MCMC) sampling. Conventional validation practices rely almost exclusively on **uniform global forward-field error metrics** ($E_{\mathrm{global}}$), such as relative $L_2$ errors averaged uniformly across spatial, temporal, and parameter domains.
+In Bayesian inverse problems governed by Partial Differential Equations (PDEs), forward surrogate models—such as Physics-Informed Neural Networks (PINNs)—are frequently deployed to accelerate Markov Chain Monte Carlo (MCMC) sampling. Conventional validation practices rely almost exclusively on **uniform global forward-field error metrics** ($E_{\mathrm{global}}$), such as relative $L_2$ errors averaged uniformly across spatial, temporal, and parameter domains.
 
 This repository provides a unified theoretical, algorithmic, and empirical framework demonstrating that:
-1. **Forward error is filtered through the observation operator and likelihood functional**: Surrogate approximation error enters the Bayesian posterior strictly through sparse sensor projections $\Delta \mathcal{G}(\theta)$ and the likelihood functional $\Delta \log \mathcal{L}(\theta)$, which exponentially reweights parameter space according to observation consistency.
-2. **Mathematical Posterior Stability Bounds**: Under approximate forward operators on compact parameter spaces $\Theta \subset \mathbb{R}^d$, quantitative Total Variation ($d_{\mathrm{TV}}$) and Wasserstein-1 ($\mathcal{W}_1$) discrepancy bounds are proved via optimal transport maximal coupling and centered Kantorovich-Rubinstein duality:
+
+1. **Forward Error Filtering**: Surrogate approximation error enters the Bayesian posterior strictly through sparse sensor projections $\Delta \mathcal{G}(\theta)$ and the likelihood functional $\Delta \log \mathcal{L}(\theta)$, which exponentially reweights parameter space according to observation consistency.
+2. **Posterior Stability Bounds**: Under approximate forward operators on compact parameter spaces $\Theta \subset \mathbb{R}^d$, quantitative Total Variation ($d_{\mathrm{TV}}$) and Wasserstein-1 ($\mathcal{W}_1$) discrepancy bounds are proved via optimal transport maximal coupling and centered Kantorovich-Rubinstein duality:
    $$\mathcal{W}_1(\pi, \widehat{\pi}) \le \mathrm{diam}(\Theta) \cdot d_{\mathrm{TV}}(\pi, \widehat{\pi}) \le \frac{\mathrm{diam}(\Theta)}{2}\left[\exp(2R\varepsilon + \varepsilon^2) - 1\right] = \mathcal{O}(\sigma_{\mathrm{noise}}^{-2})$$
 3. **Parameter-Space Error Localization**: Errors situated inside the high-posterior-density bulk interval $\Omega_{\mathrm{bulk}}$ govern posterior distortion, whereas identical errors in unvisited prior tails produce zero detectable discrepancy at continuous quadrature precision (distortion ratios $> 10^2$ to $> 10^{13}$).
 4. **Diagnostic Predictive Superiority in Diffusion-Dominated Dynamics**: Integrated log-likelihood perturbation $\|\Delta \log \mathcal{L}\|_{L_1}$ and posterior-weighted forward error $E_{\mathrm{posterior}}$ provide statistically superior predictors of posterior discrepancy over conventional global error ($p_{\mathrm{Bonf}} < 10^{-12}$) in parabolic diffusion and transport-diffusion systems.
@@ -56,7 +57,7 @@ This repository provides a unified theoretical, algorithmic, and empirical frame
 
 ---
 
-## Benchmark Systems and Empirical Results
+## Benchmark Systems and Empirical Findings
 
 The empirical validation suite evaluates a comprehensive cross-dynamical benchmark suite ($N=260$ total trained surrogates across five physical dynamical classes):
 
@@ -72,16 +73,17 @@ The empirical validation suite evaluates a comprehensive cross-dynamical benchma
 
 ---
 
-## Practical Three-Step Validation Protocol
+## Diagnostic Validation Protocol for Neural Surrogates
 
-For practitioners deploying neural network forward surrogates in Bayesian inverse problems:
+For researchers and practitioners deploying neural network forward surrogates in Bayesian inverse problems:
+
 1. **Avoid Sole Reliance on Global Forward Norms**: Global $L_2$ error ($E_{\mathrm{global}}$) averages error uniformly over uninformative parameter space and correlates poorly with localized posterior distortion.
 2. **Execute Rapid Pilot-Informed Posterior Weighting**: Run a fast preliminary inversion (e.g., maximum a posteriori optimization or short pilot MCMC chains, execution time $< 0.1\,\mathrm{s}$) to identify the estimated high-density bulk interval $\widehat{\Omega}_{\mathrm{bulk}}$, and evaluate posterior-weighted error $E_{\mathrm{posterior}}$ or integrated likelihood perturbation $\|\Delta \log \mathcal{L}\|_{L_1}$ (validation overhead $< 0.02\,\mathrm{s}$, $< 0.2\%$ of surrogate training time).
 3. **Calibrate Against Empirical MCMC Sampling Noise**: When comparing surrogate posteriors using MCMC, run paired Exact-vs-Exact control chains to compute the baseline sampling noise floor $\overline{\mathcal{W}}_1^{\mathrm{ctrl}}$. Ensure surrogate discrepancy satisfies $\mathrm{BFR} > \mathrm{BFR}_{99} \approx 1.63 - 2.28$ to prevent false discoveries of surrogate bias.
 
 ---
 
-## Repository Structure
+## Repository Architecture
 
 ```
 PINN-Bayesian-Posterior-Fidelity/
@@ -110,34 +112,28 @@ PINN-Bayesian-Posterior-Fidelity/
 │   │   ├── pure_pinn_ablation.py       # Differential equation physics-loss ablation
 │   │   └── generate_all_publication_vector_figures.py # Master publication vector graphics generator
 │   └── metrics.py                      # E_global, E_posterior, W1, and BFR implementations
-├── paper/                              # LaTeX manuscript source, figures, & proofs
-│   ├── manuscript_cmame.tex            # Master Elsevier CMAME format manuscript (59 pages)
-│   ├── manuscript.tex                  # Standard article format manuscript (39 pages)
-│   ├── CMAME_Cover_Letter.tex          # Formal editor cover letter
-│   ├── CMAME_Highlights.tex            # Elsevier research highlights
-│   ├── CMAME_Suggested_Reviewers.md    # Independent reviewer recommendations
-│   ├── title_abstract.tex              # Title, author metadata, abstract, & keywords
-│   ├── sec_01_introduction.tex         # Literature review & research positioning
-│   ├── sec_02_problem_formulation.tex  # Problem setup & theoretical stability bounds
-│   ├── sec_03_diagnostic_framework.tex # Error metrics & BFR calibration framework
-│   ├── sec_04_benchmark_problems.tex   # Benchmark PDE regimes & experimental design
-│   ├── sec_05_results.tex              # Comprehensive empirical results & ANCOVA
-│   ├── sec_06_discussion.tex           # Mechanistic interpretation & validation protocol
-│   ├── sec_07_conclusion.tex           # Summary of findings & data availability
-│   ├── appendix_proofs.tex             # Complete mathematical proofs (Theorems 2.1, 2.3)
-│   └── figures/                        # High-resolution vector PDF publication figures
 ├── results/                            # Numerical datasets & validation summaries
-│   ├── cross_pde_n60/                  # Complete datasets for all 240 surrogate models
+│   ├── cross_pde_n60/                  # Datasets for 240 cross-dynamical surrogate models
 │   │   ├── all_240models_raw.csv       # Raw metrics for all 240 trained surrogates
 │   │   ├── categorical_ancova_results.csv # 12-test ANCOVA multiplicity table
 │   │   ├── heat_d5_summary.json        # 5D high-dimensional validation dataset
 │   │   └── bfr_sensitivity_analysis.json # BFR calibration sensitivity sweep
-│   └── navier_stokes_2d/               # 2D Navier-Stokes multi-dimensional benchmark
-│       ├── ns2d_20models_raw.csv       # Raw metrics for 20 Navier-Stokes models
-│       ├── ns2d_summary.json           # Correlation and Williams test summary
-│       └── ns2d_localization_sweep.csv # 2D fluid flow error localization sweep
+│   ├── navier_stokes_2d/               # 2D Navier-Stokes multi-dimensional benchmark
+│   │   ├── ns2d_20models_raw.csv       # Raw metrics for 20 Navier-Stokes models
+│   │   ├── ns2d_summary.json           # Correlation and Williams test summary
+│   │   ├── ns2d_localization_sweep.csv # 2D fluid flow error localization sweep
+│   │   └── checkpoints/                # Serialized PyTorch model checkpoints (.pt)
+│   ├── sensitivity_analysis/           # Robustness and sensitivity evaluation datasets
+│   │   ├── noise_sweep/                # Continuous observation noise modulation
+│   │   ├── mcmc_noise_floor/           # Dimensionless BFR sampling calibration
+│   │   ├── sensor_geometry/            # Sensor layout resolution sweep
+│   │   ├── error_localization/         # Parameter error localization sweep
+│   │   └── non_oracle_validation/      # Budget-constrained validation analysis
+│   └── ablation/                       # Methodological ablation studies
+│       └── pure_pinn_ablation/         # Pure physics loss vs supervised comparison
 └── tests/                              # Automated unit test suite (49 test functions)
     ├── test_cross_pde_suite.py         # Analytical PDE residual verifications
+    ├── test_experiments_suite.py       # Baseline and sweep verification tests
     ├── test_heat_equation_pinn.py      # Autograd physics loss & architecture tests
     ├── test_navier_stokes_2d.py        # 2D Navier-Stokes autograd residual & W1 tests
     ├── test_research_metrics.py        # Error metrics & Wasserstein implementations
@@ -159,7 +155,7 @@ cd PINN-Bayesian-Posterior-Fidelity
 pip install -r requirements.txt
 ```
 
-*Requirements: Python 3.10+, PyTorch 2.0+, NumPy, SciPy, Matplotlib, Pandas, Statsmodels, PyTest.*
+*Requirements: Python 3.10+, PyTorch 2.0+, NumPy, SciPy, Matplotlib, Pandas, Statsmodels, Scikit-learn, PyTest.*
 
 ---
 
@@ -180,7 +176,7 @@ Expected output:
 
 ### 3. Reproduce Full Cross-PDE Benchmark ($N=240$ Models)
 
-Train the balanced 240-model surrogate ensemble across all four PDE regimes, compute continuous quadrature Wasserstein distances, evaluate likelihood perturbations, and generate all publication figures:
+Train the balanced 240-model surrogate ensemble across all four PDE regimes, compute continuous quadrature Wasserstein distances, evaluate likelihood perturbations, and generate all benchmark summaries:
 
 ```bash
 python experiments/cross_pde/run_cross_pde_benchmark.py
@@ -208,9 +204,9 @@ python experiments/cross_pde/run_navier_stokes_2d_campaign.py
 
 ---
 
-### 6. Generate All Publication Figures (Vector PDF)
+### 6. Generate All Publication Vector Figures
 
-Generate all 8 publication figures with exact native LaTeX fonts and horizontal bottom legends:
+Generate all publication figures in vector PDF and high-resolution format with native LaTeX fonts and horizontal bottom legends:
 
 ```bash
 python experiments/cross_pde/generate_all_publication_vector_figures.py
@@ -218,26 +214,9 @@ python experiments/cross_pde/generate_all_publication_vector_figures.py
 
 ---
 
-### 7. Compile LaTeX Manuscripts
+### 7. Manuscript and Preprint Information
 
-Compile the Elsevier CMAME formatted manuscript (59 pages):
-
-```bash
-cd paper
-pdflatex -interaction=nonstopmode manuscript_cmame.tex
-bibtex manuscript_cmame
-pdflatex -interaction=nonstopmode manuscript_cmame.tex
-pdflatex -interaction=nonstopmode manuscript_cmame.tex
-```
-
-Or compile the standard article format manuscript (39 pages):
-
-```bash
-pdflatex -interaction=nonstopmode manuscript.tex
-bibtex manuscript
-pdflatex -interaction=nonstopmode manuscript.tex
-pdflatex -interaction=nonstopmode manuscript.tex
-```
+The preprint associated with this research is currently under peer review at *Computer Methods in Applied Mechanics and Engineering* (CMAME). All experimental scripts, data files, trained model checkpoints, and statistical routines in this repository allow complete independent verification and reproduction of every result and figure reported in the paper.
 
 ---
 

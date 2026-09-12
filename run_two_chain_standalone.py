@@ -69,9 +69,10 @@ def main():
         
     if os.path.exists(weights_path):
         model.load_state_dict(torch.load(weights_path, map_location=device, weights_only=True))
-        print(f"  [OK] Loaded trained PINN surrogate weights from {weights_path}")
+        model.eval()
+        print(f"  Loaded trained PINN surrogate weights from {weights_path}")
     else:
-        print(f"  [WARNING] Checkpoint {weights_path} not found. Running with un-trained weights.")
+        print(f"  Checkpoint {weights_path} not found. Running with un-trained weights.")
         
     pinn_op = ParametricPINNForwardOperator(model=model, resolution=100, device=device)
     
@@ -320,7 +321,7 @@ def main():
         n_frames=120,
         fps=15
     )
-    print(f"  [OK] Animation saved to {gif_path}")
+    print(f"  Animation saved to {gif_path}")
     
     # -------------------------------------------------------------------------
     # 8. PRINT SUMMARY RESULTS

@@ -1,7 +1,7 @@
 """
 Master Publication Vector Figure Generator for Entire Manuscript
 ================================================================
-Generates all 8 publication figures in razor-sharp Vector PDF format (and PNG):
+Generates all 8 publication figures in vector PDF and high-resolution raster formats:
 1. Fig 16: MCMC Noise Floor Distribution (Continuous Log-Normal PDF & Thresholds)
 2. Fig 18: Noise Modulation Sweep (Continuous Asymptotic Scalings)
 3. Fig 21: Cross-PDE Diagnostic Hierarchy (Continuous Regression Bands)
@@ -13,11 +13,12 @@ Generates all 8 publication figures in razor-sharp Vector PDF format (and PNG):
 
 Formatting Standards Enforced:
 - Exact LaTeX Computer Modern fonts via text.usetex = True
-- All legends placed horizontally below the x-axis for a 100% clean, uncluttered canvas
+- All legends placed horizontally below the x-axis to maintain clear visualization of curves
 - Purely continuous curves and high-resolution fields rather than coarse discrete segments
 """
 
 import os
+import sys
 import json
 import numpy as np
 import pandas as pd
@@ -26,6 +27,10 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
+
+repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+if repo_root not in sys.path:
+    sys.path.insert(0, repo_root)
 
 from experiments.cross_pde.pde_definitions import get_pde_benchmark, generate_space_time_sensors
 from experiments.cross_pde.navier_stokes_2d import NavierStokes2DTaylorGreenBenchmark, generate_space_time_sensors_2d
@@ -57,7 +62,7 @@ def export_fig(fig, base_path):
     fig.savefig(pdf_path, format="pdf", bbox_inches="tight")
     fig.savefig(png_path, format="png", dpi=300, bbox_inches="tight")
     plt.close(fig)
-    print(f"[VECTOR EXPORT] Generated: {pdf_path} & {png_path}", flush=True)
+    print(f"Generated figure: {pdf_path} and {png_path}", flush=True)
 
 
 # =============================================================================
@@ -117,7 +122,7 @@ def generate_fig16(repo_root):
 # =============================================================================
 def generate_fig18(repo_root):
     set_master_style()
-    csv_path = os.path.join(repo_root, "results", "audit", "final_publication_hardening", "noise_sweep", "noise_modulation_quadrature_summary.csv")
+    csv_path = os.path.join(repo_root, "results", "sensitivity_analysis", "noise_sweep", "noise_modulation_quadrature_summary.csv")
     df = pd.read_csv(csv_path)
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11.5, 4.6), dpi=300)
@@ -387,7 +392,7 @@ def generate_fig24(repo_root):
 # =============================================================================
 def generate_fig25(repo_root):
     set_master_style()
-    csv_path = os.path.join(repo_root, "results", "audit", "final_publication_hardening", "pure_pinn_ablation", "pure_pinn_ablation_results.csv")
+    csv_path = os.path.join(repo_root, "results", "ablation", "pure_pinn_ablation", "pure_pinn_ablation_results.csv")
     df = pd.read_csv(csv_path)
 
     fig = plt.figure(figsize=(15.0, 4.8), dpi=300)
@@ -497,7 +502,7 @@ def run_all_figures():
     )
 
     print("\n" + "=" * 70, flush=True)
-    print("ALL 8 PUBLICATION FIGURES SUCCESSFULLY REGENERATED IN VECTOR PDF!", flush=True)
+    print("Generated all publication vector figures.", flush=True)
     print("=" * 70, flush=True)
 
 

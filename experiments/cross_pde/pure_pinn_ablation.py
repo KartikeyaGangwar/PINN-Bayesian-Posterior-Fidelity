@@ -173,7 +173,7 @@ def run_pure_pinn_ablation():
 
     pde = get_pde_benchmark("heat")
     cfg = pde.config
-    output_dir = os.path.join(repo_root, "results", "audit", "final_publication_hardening", "pure_pinn_ablation")
+    output_dir = os.path.join(repo_root, "results", "ablation", "pure_pinn_ablation")
     os.makedirs(output_dir, exist_ok=True)
 
     # 1. Sensors & Observations

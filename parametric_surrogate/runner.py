@@ -60,8 +60,8 @@ def run_parametric_surrogate_pipeline(
         config=domain_config,
         seed=42
     )
-    print(f"[OK] Derived alpha bounds: [{a_low:.4f}, {a_high:.4f}] from Prior")
-    print(f"[OK] Generated {len(train_alphas)} parameter samples for training")
+    print(f"Derived alpha bounds: [{a_low:.4f}, {a_high:.4f}] from Prior")
+    print(f"Generated {len(train_alphas)} parameter samples for training")
     
     # 2. Generate exact offline training data
     dataset_dict = generate_exact_parametric_dataset(
@@ -85,7 +85,7 @@ def run_parametric_surrogate_pipeline(
     val_grid = np.linspace(a_low, a_high, 30)
     metrics, rel_l2_arr, max_err_arr = validate_surrogate_grid(model, val_grid, resolution=100, device=device)
     mean_l2 = float(np.mean(rel_l2_arr))
-    print(f"[VALIDATION] Evaluated {len(val_grid)} alpha points | Mean Rel L2 Error: {mean_l2:.2%}")
+    print(f"Validation: Evaluated {len(val_grid)} alpha points | Mean Rel L2 Error: {mean_l2:.2%}")
     
     # 5. Generate Plots
     plot_surrogate_error_curves(val_grid, rel_l2_arr, max_err_arr, output_dir=output_dir, true_alpha=0.5)
@@ -104,6 +104,6 @@ def run_parametric_surrogate_pipeline(
     )
     
     total_time = time.time() - start_time
-    print(f"\n[SUCCESS] Pipeline Completed in {total_time:.2f}s | Artifacts saved to {output_dir}\n")
+    print(f"\nPipeline completed in {total_time:.2f}s | Artifacts saved to {output_dir}\n")
     
     return model, {"total_time": total_time, "mean_rel_l2": mean_l2, "metrics": metrics}

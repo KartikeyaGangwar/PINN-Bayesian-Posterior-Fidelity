@@ -401,7 +401,7 @@ def run_navier_stokes_2d_campaign(
         json.dump(summary_results, f, indent=2)
 
     print("\n" + "=" * 70, flush=True)
-    print("CAMPAIGN COMPLETE! SUMMARY OF RESULTS:", flush=True)
+    print("Validation campaign complete. Summary of results:", flush=True)
     print(f"r(E_posterior, W1)  = {r_post:.4f} (rho = {rho_post:.4f})", flush=True)
     print(f"r(E_global, W1)     = {r_glob:.4f} (rho = {rho_glob:.4f})", flush=True)
     print(f"r(Likelihood, W1)   = {r_lik:.4f} (rho = {rho_lik:.4f})", flush=True)

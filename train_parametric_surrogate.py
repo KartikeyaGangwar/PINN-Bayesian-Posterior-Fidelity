@@ -46,8 +46,8 @@ def main():
         config=config,
         seed=42
     )
-    print(f"[OK] Derived alpha training domain: [{a_low:.4f}, {a_high:.4f}]")
-    print(f"[OK] Generated {len(train_alphas)} Latin Hypercube parameter samples")
+    print(f"Derived alpha training domain: [{a_low:.4f}, {a_high:.4f}]")
+    print(f"Generated {len(train_alphas)} Latin Hypercube parameter samples")
     
     # 2. Exact training dataset (60x60 grid per parameter = 108,000 points)
     dataset_dict = generate_exact_parametric_dataset(
@@ -56,11 +56,11 @@ def main():
         output_path=f"{output_dir}/parametric_training_dataset.npz"
     )
     dataset = ParametricPINNDataset(dataset_dict)
-    print(f"[OK] Training dataset created with {len(dataset):,} space-time-parameter points")
+    print(f"Training dataset created with {len(dataset):,} space-time-parameter points")
     
     # 3. Model Architecture
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"[OK] Hardware device: {device} | dtype: torch.float64")
+    print(f"Hardware device: {device} | dtype: torch.float64")
     
     model = ParametricModifiedMLP(
         n_input=3,
@@ -109,7 +109,7 @@ def main():
     # 6. Save Model Checkpoint
     weights_path = os.path.join(output_dir, "heat_equation_pinn.pth")
     torch.save(model.state_dict(), weights_path)
-    print(f"[OK] Model weights saved to {weights_path}")
+    print(f"Model weights saved to {weights_path}")
     torch.save(model.state_dict(), os.path.join(output_dir, "parametric_pinn_weights.pth"))
     
     # 7. Generate Plots
@@ -127,7 +127,7 @@ def main():
         config={"n_train_lhs": 30, "epochs": 800, "lbfgs_iters": 150},
         output_dir=f"{output_dir}/surrogate_validation"
     )
-    print("[SUCCESS] All training artifacts and validation plots successfully saved.")
+    print("Surrogate training and validation artifacts successfully saved.")
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 """
 High-Performance Vectorized Cross-PDE Experimental Campaign Runner
 ==================================================================
-Executes Tier 2 validation across 4 PDE benchmarks in vectorized GPU batches:
+Executes cross-dynamical surrogate validation campaigns across 4 PDE benchmark systems in vectorized batches:
 - Heat Equation (Parabolic Diffusion)
 - Wave Equation (Hyperbolic Wave)
 - Advection-Diffusion Equation (Transport + Diffusion)

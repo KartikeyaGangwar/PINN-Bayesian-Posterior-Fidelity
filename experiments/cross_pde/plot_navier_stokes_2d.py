@@ -3,8 +3,8 @@ Publication Vector Figure Generator for 2D Navier-Stokes Benchmark
 ===================================================================
 Generates Figure 26 with:
 - Exact LaTeX Computer Modern fonts (text.usetex = True)
-- Vector PDF output for razor-sharp manuscript integration
-- All legends placed horizontally below the x-axis for an uncluttered plotting canvas
+- Vector PDF output for publication integration
+- All legends placed horizontally below the x-axis to maintain clear field visualization
 - Purely continuous analytical functions and high-resolution spatial fields
 """
 
@@ -206,8 +206,8 @@ def generate_figure_26(
     plt.savefig(output_pdf, format="pdf", bbox_inches="tight")
     plt.savefig(output_png, format="png", dpi=300, bbox_inches="tight")
     plt.close()
-    print(f"[SUCCESS] Generated Vector PDF: {output_pdf}", flush=True)
-    print(f"[SUCCESS] Generated High-Res PNG: {output_png}", flush=True)
+    print(f"Generated Vector PDF: {output_pdf}", flush=True)
+    print(f"Generated High-Res PNG: {output_png}", flush=True)
 
 
 if __name__ == "__main__":
