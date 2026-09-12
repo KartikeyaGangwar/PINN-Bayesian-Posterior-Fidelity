@@ -18,7 +18,7 @@ import torch
 from scipy import stats
 from sklearn.metrics import roc_auc_score
 
-repo_root = Path(r"C:\Users\jamun\Desktop\PINN-Bayesian-Posterior-Fidelity")
+repo_root = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(repo_root))
 
 from experiments.cross_pde.pde_definitions import get_pde_benchmark, generate_space_time_sensors

@@ -461,7 +461,7 @@ def generate_fig25(repo_root):
 
 
 def run_all_figures():
-    repo_root = r"C:\Users\jamun\Desktop\PINN-Bayesian-Posterior-Fidelity"
+    repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
     print("=" * 70, flush=True)
     print("GENERATING ALL PUBLICATION FIGURES IN VECTOR PDF & HIGH-RES PNG", flush=True)
     print("STANDARDS: LaTeX Fonts (usetex=True) + Horizontal Bottom Legends", flush=True)

@@ -1,3 +1,14 @@
+"""
+Unit Tests for Statistical Methodology
+======================================
+Verifies:
+1. Williams (1959) dependent correlation test symmetry and asymptotic limits
+2. Family-wise error rate control (Bonferroni) and False Discovery Rate (Benjamini-Hochberg)
+3. Exact binomial directional hypothesis testing
+4. Optimal transport maximal coupling inequality on synthetic distributions
+5. Fixed-effects Categorical ANCOVA degree-of-freedom structure
+"""
+
 import pytest
 import numpy as np
 import scipy.stats as stats
@@ -38,7 +49,7 @@ def benjamini_hochberg_fdr(p_values):
     return final_q.tolist()
 
 
-class TestStatisticalRigor:
+class TestStatisticalMethodology:
     def test_williams_formula_known_values(self):
         t, p = williams_test(0.8878, 0.8747, 0.9987, 60)
         assert t > 4.5

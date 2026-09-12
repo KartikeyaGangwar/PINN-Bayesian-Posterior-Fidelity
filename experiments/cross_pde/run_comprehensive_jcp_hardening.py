@@ -1,14 +1,14 @@
 """
-Comprehensive JCP Hardening & Experimental Suite
-=================================================
+Cross-PDE Comprehensive Benchmark and Diagnostic Evaluation Suite
+==================================================================
 Executes:
-1. Symmetric N=60 x 4 = 240 model cross-PDE campaign (Heat, Wave, Adv-Diff, Burgers)
-2. Within-level correlation and partial correlation analysis (stratification control)
-3. Actual-PINN parameter-space error tracing: e(theta) -> e_sensor(theta) -> Delta log L(theta) -> W1
-4. Multi-magnitude support-vs-tail sweep (Delta log L in {1, 2.5, 5, 10, 20})
-5. BFR sensitivity analysis across control pairs (P in {25, 50, 100}) and chain lengths
-6. Computational execution timing & overhead benchmark
-7. Sensor network sensitivity sweep (M in {10, 20, 40, 80})
+1. Balanced N=60 x 4 = 240 model cross-PDE campaign (Heat, Wave, Advection-Diffusion, Burgers)
+2. Within-tier correlation and partial correlation analysis (stratification control)
+3. Parameter-space error tracing: e(theta) -> e_sensor(theta) -> Delta log L(theta) -> W1
+4. Controlled bulk-vs-tail perturbation sweep
+5. Dimensionless BFR sensitivity calibration across control pairs and chain lengths
+6. Computational execution timing and validation overhead benchmark
+7. Sensor network resolution sweep
 8. Physical dynamics metrics (wave phase shift, transport coupling, gradient steepening)
 """
 
@@ -730,5 +730,5 @@ if __name__ == "__main__":
     cost_data = run_computational_cost_benchmark()
     generate_publication_figures_n60()
     print(f"\n=======================================================", flush=True)
-    print(f"ALL JCP HARDENING EXPERIMENTS COMPLETED IN {time.time() - t_start:.2f}s", flush=True)
+    print(f"CROSS-PDE EXPERIMENTAL CAMPAIGN COMPLETED IN {time.time() - t_start:.2f}s", flush=True)
     print(f"=======================================================", flush=True)

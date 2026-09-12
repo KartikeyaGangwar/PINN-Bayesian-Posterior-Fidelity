@@ -1,3 +1,14 @@
+"""
+Categorical ANCOVA, Multiplicity Correction, and Higher-Dimensional Validation
+==============================================================================
+Performs:
+1. Fixed-effects Categorical ANCOVA controlling for surrogate convergence tiers
+2. Within-tier Pearson correlation analysis across cross-PDE benchmark models
+3. Multiplicity corrections (Bonferroni FWER and Benjamini-Hochberg FDR)
+4. 5-dimensional parametric thermal diffusion inverse problem validation (d=5)
+   evaluating 100-direction Sliced Wasserstein distances and observational projection
+"""
+
 import os
 import sys
 import json
@@ -134,10 +145,10 @@ print(df_hyp.to_string(index=False))
 df_hyp.to_csv(os.path.join(output_dir, "multiple_testing_correction.csv"), index=False)
 
 # -------------------------------------------------------------
-# Part 3: d=5 Parametric Heat Equation Stress Test
+# Part 3: d=5 Parametric Heat Equation Multi-Dimensional Analysis
 # -------------------------------------------------------------
 print("\n=======================================================")
-print("PART 3: HIGHER-DIMENSIONAL (d=5) PARAMETRIC STRESS TEST")
+print("PART 3: HIGHER-DIMENSIONAL (d=5) PARAMETRIC BENCHMARK")
 print("=======================================================")
 
 theta_true = np.array([0.50, 0.08, -0.05, 0.04, -0.02])
@@ -386,7 +397,7 @@ r_eg_d5 = float(np.corrcoef(eg_d5, w1_d5)[0, 1])
 r_ep_d5 = float(np.corrcoef(ep_d5, w1_d5)[0, 1])
 r_lik_d5 = float(np.corrcoef(lik_d5, w1_d5)[0, 1])
 
-print("\n[d=5 HIGHER-DIMENSIONAL STRESS TEST SUMMARY]")
+print("\n[d=5 HIGHER-DIMENSIONAL BENCHMARK SUMMARY]")
 print(f"  N = {len(sw1_d5)} models (4 convergence tiers x 5 random seeds)")
 print(f"  Sliced Wasserstein Pearson r(E_global, SW1)    = {r_eg_sw1:.4f}")
 print(f"  Sliced Wasserstein Pearson r(E_posterior, SW1) = {r_ep_sw1:.4f} (Williams vs Eg: t={t_williams_ep_sw1:.2f}, p={p_williams_ep_sw1:.4e})")
@@ -413,4 +424,4 @@ d5_summary = {
 with open(os.path.join(output_dir, "heat_d5_summary.json"), "w") as f:
     json.dump(d5_summary, f, indent=2)
 
-print("\nAUDIT COMPLETE.")
+print("\nSTATISTICAL AND DIMENSIONAL ANALYSIS COMPLETE.")

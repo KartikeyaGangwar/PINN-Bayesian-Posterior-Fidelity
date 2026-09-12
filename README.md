@@ -4,7 +4,6 @@
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 [![Test Suite](https://img.shields.io/badge/pytest-49%2F49%20passed-brightgreen.svg)](tests/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Status: Submission Ready](https://img.shields.io/badge/Status-Submission%20Ready-success.svg)](#)
 
 Official open-source research repository and computational reproducibility suite for the research article:  
 **"Parameter-Space Error Localization and Posterior Fidelity of Physics-Informed Neural Network Forward Surrogates in Bayesian Inverse Problems"**
@@ -104,10 +103,10 @@ PINN-Bayesian-Posterior-Fidelity/
 │   │   ├── trainer.py                  # Parametric PINN trainer (Adam + L-BFGS)
 │   │   ├── runner.py                   # Cross-PDE batch execution engine
 │   │   ├── plots.py                    # Publication figure generation utilities
-│   │   ├── run_comprehensive_jcp_hardening.py # Master 240-model reproducibility runner
-│   │   ├── run_audit_and_d5_stress_test.py    # ANCOVA, Multiple testing, & d=5 stress test
+│   │   ├── run_cross_pde_benchmark.py  # Master 240-model cross-dynamical benchmark runner
+│   │   ├── run_statistical_ancova_and_d5.py # Categorical ANCOVA, multiplicity corrections, & 5D analysis
 │   │   ├── navier_stokes_2d.py         # 2D Navier-Stokes Taylor-Green analytical solver
-│   │   ├── run_navier_stokes_2d_campaign.py   # Navier-Stokes 20-model training campaign
+│   │   ├── run_navier_stokes_2d_campaign.py # Navier-Stokes 20-model training campaign
 │   │   ├── pure_pinn_ablation.py       # Differential equation physics-loss ablation
 │   │   └── generate_all_publication_vector_figures.py # Master publication vector graphics generator
 │   └── metrics.py                      # E_global, E_posterior, W1, and BFR implementations
@@ -131,18 +130,18 @@ PINN-Bayesian-Posterior-Fidelity/
 │   ├── cross_pde_n60/                  # Complete datasets for all 240 surrogate models
 │   │   ├── all_240models_raw.csv       # Raw metrics for all 240 trained surrogates
 │   │   ├── categorical_ancova_results.csv # 12-test ANCOVA multiplicity table
-│   │   ├── heat_d5_summary.json        # 5D high-dimensional stress test dataset
+│   │   ├── heat_d5_summary.json        # 5D high-dimensional validation dataset
 │   │   └── bfr_sensitivity_analysis.json # BFR calibration sensitivity sweep
 │   └── navier_stokes_2d/               # 2D Navier-Stokes multi-dimensional benchmark
 │       ├── ns2d_20models_raw.csv       # Raw metrics for 20 Navier-Stokes models
 │       ├── ns2d_summary.json           # Correlation and Williams test summary
 │       └── ns2d_localization_sweep.csv # 2D fluid flow error localization sweep
 └── tests/                              # Automated unit test suite (49 test functions)
-    ├── test_audit_and_statistical_rigor.py # Williams formula, ANCOVA, OT coupling proofs
     ├── test_cross_pde_suite.py         # Analytical PDE residual verifications
     ├── test_heat_equation_pinn.py      # Autograd physics loss & architecture tests
     ├── test_navier_stokes_2d.py        # 2D Navier-Stokes autograd residual & W1 tests
     ├── test_research_metrics.py        # Error metrics & Wasserstein implementations
+    ├── test_statistical_methodology.py # Williams formula, ANCOVA, OT coupling proofs
     └── test_two_chain_mcmc.py          # MCMC stochastic control & consistency tests
 ```
 
@@ -174,7 +173,7 @@ python -m pytest tests/ -v
 
 Expected output:
 ```
-============================= 49 passed in 24.2s =============================
+============================= 49 passed in 26.2s =============================
 ```
 
 ---
@@ -184,17 +183,17 @@ Expected output:
 Train the balanced 240-model surrogate ensemble across all four PDE regimes, compute continuous quadrature Wasserstein distances, evaluate likelihood perturbations, and generate all publication figures:
 
 ```bash
-python experiments/cross_pde/run_comprehensive_jcp_hardening.py
+python experiments/cross_pde/run_cross_pde_benchmark.py
 ```
 
 ---
 
-### 4. Run Categorical ANCOVA and $d=5$ High-Dimensional Stress Test
+### 4. Run Categorical ANCOVA and $d=5$ High-Dimensional Benchmark
 
-Execute the fixed-effects Categorical ANCOVA, within-tier subgroup analysis, family-wise multiple testing corrections, and the 5-dimensional parametric thermal diffusion stress test:
+Execute the fixed-effects Categorical ANCOVA, within-tier subgroup analysis, family-wise multiple testing corrections, and the 5-dimensional parametric thermal diffusion benchmark:
 
 ```bash
-python experiments/cross_pde/run_audit_and_d5_stress_test.py
+python experiments/cross_pde/run_statistical_ancova_and_d5.py
 ```
 
 ---
@@ -209,7 +208,17 @@ python experiments/cross_pde/run_navier_stokes_2d_campaign.py
 
 ---
 
-### 6. Compile LaTeX Manuscripts
+### 6. Generate All Publication Figures (Vector PDF)
+
+Generate all 8 publication figures with exact native LaTeX fonts and horizontal bottom legends:
+
+```bash
+python experiments/cross_pde/generate_all_publication_vector_figures.py
+```
+
+---
+
+### 7. Compile LaTeX Manuscripts
 
 Compile the Elsevier CMAME formatted manuscript (59 pages):
 
