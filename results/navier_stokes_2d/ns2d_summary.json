@@ -1,0 +1,34 @@
+{
+  "benchmark": "2D Incompressible Navier-Stokes (Taylor-Green)",
+  "domain": "2D Space (x, y in [0, 2*pi]^2) x 1D Time (t in [0, 1])",
+  "n_models": 20,
+  "n_sensors": 40,
+  "sensor_channels": 80,
+  "quad_resolution": 5000,
+  "true_viscosity": 0.05,
+  "mass_support": 0.48813139142459583,
+  "mass_tail": 1.4571012971008908e-249,
+  "correlations": {
+    "r_posterior": 0.8470306186513876,
+    "p_posterior": 2.4653587196136707e-06,
+    "rho_posterior": 0.7864661654135338,
+    "r_global": 0.847652569944677,
+    "p_global": 2.382285484943424e-06,
+    "rho_global": 0.7864661654135338,
+    "r_likelihood": 0.7410262213125205,
+    "p_likelihood": 0.00018559655224644384,
+    "rho_likelihood": 0.7548872180451127
+  },
+  "williams_tests": {
+    "t_post_vs_glob": -0.670935501958076,
+    "p_post_vs_glob": 0.5112753432326509,
+    "t_lik_vs_glob": -3.8556673508039725,
+    "p_lik_vs_glob": 0.0012679869489105045
+  },
+  "localization_evidence": {
+    "delta_max": 20.0,
+    "w1_support_max": 0.0011085513685470953,
+    "w1_tail_max": 5.774790223433375e-20,
+    "max_distortion_ratio": 11085513685470.953
+  }
+}

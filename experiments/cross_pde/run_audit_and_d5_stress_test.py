@@ -173,7 +173,8 @@ def log_likelihood_d5(theta):
         if theta[i] < param_bounds[i, 0] or theta[i] > param_bounds[i, 1]:
             return -np.inf
     preds = np.array([exact_solve_d5(sensors_d5[m, 0], sensors_d5[m, 1], theta) for m in range(len(sensors_d5))])
-    return -0.5 * np.sum((preds - y_obs_d5)**2) / (sigma_noise_d5**2)
+    norm_const = 0.5 * len(sensors_d5) * np.log(2.0 * np.pi * (sigma_noise_d5**2))
+    return -norm_const - 0.5 * np.sum((preds - y_obs_d5)**2) / (sigma_noise_d5**2)
 
 def log_prior_d5(theta):
     for i in range(d):
@@ -332,6 +333,17 @@ for lvl_idx, lvl in enumerate(tiers_d5):
             w1_dims.append(w1_d)
         w1_mean = float(np.mean(w1_dims))
         
+        # 100-direction Sliced Wasserstein-1 Distance
+        n_proj = 100
+        rng_proj = np.random.default_rng(2026 + s)
+        proj_dirs = rng_proj.normal(0.0, 1.0, size=(n_proj, d))
+        proj_dirs /= np.linalg.norm(proj_dirs, axis=1, keepdims=True)
+        sw1_vals = [
+            stats.wasserstein_distance(np.sort(pinn_samples @ v), np.sort(exact_samples_d5 @ v))
+            for v in proj_dirs
+        ]
+        sw1_mean = float(np.mean(sw1_vals))
+        
         rec = {
             "pde": "heat_d5",
             "tier": lvl["name"],
@@ -339,6 +351,7 @@ for lvl_idx, lvl in enumerate(tiers_d5):
             "e_global": e_global,
             "e_posterior": e_posterior,
             "l1_delta_loglik": l1_delta_loglik,
+            "sw1": sw1_mean,
             "w1_mean": w1_mean,
             "w1_dim0": w1_dims[0],
             "w1_dim1": w1_dims[1],
@@ -347,41 +360,54 @@ for lvl_idx, lvl in enumerate(tiers_d5):
             "w1_dim4": w1_dims[4]
         }
         d5_results.append(rec)
-        print(f"  Model d=5 Tier={lvl['name']}, Seed={s} -> Eg={e_global:.4f}, Ep={e_posterior:.4f}, Lik={l1_delta_loglik:.4f}, W1={w1_mean:.6f}", flush=True)
+        print(f"  Model d=5 Tier={lvl['name']}, Seed={s} -> Eg={e_global:.4f}, Ep={e_posterior:.4f}, Lik={l1_delta_loglik:.4f}, SW1={sw1_mean:.6f}, W1_marg={w1_mean:.6f}", flush=True)
 
 df_d5 = pd.DataFrame(d5_results)
 df_d5.to_csv(os.path.join(output_dir, "heat_d5_stress_test_results.csv"), index=False)
 
+sw1_d5 = df_d5["sw1"].values
 w1_d5 = df_d5["w1_mean"].values
 eg_d5 = df_d5["e_global"].values
 ep_d5 = df_d5["e_posterior"].values
 lik_d5 = df_d5["l1_delta_loglik"].values
 
-r_eg_d5 = float(np.corrcoef(eg_d5, w1_d5)[0, 1])
-r_ep_d5 = float(np.corrcoef(ep_d5, w1_d5)[0, 1])
-r_lik_d5 = float(np.corrcoef(lik_d5, w1_d5)[0, 1])
+# Correlations with Sliced Wasserstein (SW1)
+r_eg_sw1 = float(np.corrcoef(eg_d5, sw1_d5)[0, 1])
+r_ep_sw1 = float(np.corrcoef(ep_d5, sw1_d5)[0, 1])
+r_lik_sw1 = float(np.corrcoef(lik_d5, sw1_d5)[0, 1])
 r_collin_d5 = float(np.corrcoef(eg_d5, ep_d5)[0, 1])
 r_collin_lik_d5 = float(np.corrcoef(eg_d5, lik_d5)[0, 1])
 
-t_williams_ep_d5, p_williams_ep_d5 = williams_test(r_ep_d5, r_eg_d5, r_collin_d5, len(w1_d5))
-t_williams_lik_d5, p_williams_lik_d5 = williams_test(r_lik_d5, r_eg_d5, r_collin_lik_d5, len(w1_d5))
+t_williams_ep_sw1, p_williams_ep_sw1 = williams_test(r_ep_sw1, r_eg_sw1, r_collin_d5, len(sw1_d5))
+t_williams_lik_sw1, p_williams_lik_sw1 = williams_test(r_lik_sw1, r_eg_sw1, r_collin_lik_d5, len(sw1_d5))
+
+# Correlations with marginal W1
+r_eg_d5 = float(np.corrcoef(eg_d5, w1_d5)[0, 1])
+r_ep_d5 = float(np.corrcoef(ep_d5, w1_d5)[0, 1])
+r_lik_d5 = float(np.corrcoef(lik_d5, w1_d5)[0, 1])
 
 print("\n[d=5 HIGHER-DIMENSIONAL STRESS TEST SUMMARY]")
-print(f"  N = {len(w1_d5)} models (4 convergence tiers x 5 random seeds)")
-print(f"  Pearson r(E_global, W1)       = {r_eg_d5:.4f}")
-print(f"  Pearson r(E_posterior, W1)    = {r_ep_d5:.4f} (Williams vs Eg: t={t_williams_ep_d5:.2f}, p={p_williams_ep_d5:.4e})")
-print(f"  Pearson r(Likelihood, W1)     = {r_lik_d5:.4f} (Williams vs Eg: t={t_williams_lik_d5:.2f}, p={p_williams_lik_d5:.4e})")
+print(f"  N = {len(sw1_d5)} models (4 convergence tiers x 5 random seeds)")
+print(f"  Sliced Wasserstein Pearson r(E_global, SW1)    = {r_eg_sw1:.4f}")
+print(f"  Sliced Wasserstein Pearson r(E_posterior, SW1) = {r_ep_sw1:.4f} (Williams vs Eg: t={t_williams_ep_sw1:.2f}, p={p_williams_ep_sw1:.4e})")
+print(f"  Sliced Wasserstein Pearson r(Likelihood, SW1)  = {r_lik_sw1:.4f} (Williams vs Eg: t={t_williams_lik_sw1:.2f}, p={p_williams_lik_sw1:.4e})")
+print(f"  Marginal W1 Pearson r(E_global, W1_marg)       = {r_eg_d5:.4f}")
+print(f"  Marginal W1 Pearson r(E_posterior, W1_marg)    = {r_ep_d5:.4f}")
+print(f"  Marginal W1 Pearson r(Likelihood, W1_marg)     = {r_lik_d5:.4f}")
 
 d5_summary = {
-    "n_models": len(w1_d5),
+    "n_models": len(sw1_d5),
     "dimension": 5,
-    "r_global": r_eg_d5,
-    "r_posterior": r_ep_d5,
-    "r_loglik": r_lik_d5,
-    "williams_ep_eg_t": t_williams_ep_d5,
-    "williams_ep_eg_p": p_williams_ep_d5,
-    "williams_lik_eg_t": t_williams_lik_d5,
-    "williams_lik_eg_p": p_williams_lik_d5
+    "r_global_sw1": r_eg_sw1,
+    "r_posterior_sw1": r_ep_sw1,
+    "r_loglik_sw1": r_lik_sw1,
+    "williams_ep_eg_t": t_williams_ep_sw1,
+    "williams_ep_eg_p": p_williams_ep_sw1,
+    "williams_lik_eg_t": t_williams_lik_sw1,
+    "williams_lik_eg_p": p_williams_lik_sw1,
+    "r_global_marginal": r_eg_d5,
+    "r_posterior_marginal": r_ep_d5,
+    "r_loglik_marginal": r_lik_d5
 }
 
 with open(os.path.join(output_dir, "heat_d5_summary.json"), "w") as f:

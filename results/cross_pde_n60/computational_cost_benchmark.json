@@ -1,12 +1,22 @@
 {
   "device": "cuda",
-  "exact_forward_solve_time_s": 4.308938980102539e-06,
-  "pinn_forward_query_time_s": 0.0011217470169067384,
-  "speedup_forward_query": 0.003841275185188019,
-  "pinn_training_time_avg_s": 8.5,
-  "mcmc_10k_exact_time_s": 1.85,
-  "mcmc_10k_pinn_time_s": 0.42,
-  "mcmc_speedup": 4.4,
-  "posterior_aware_validation_overhead_s": 0.015,
-  "pilot_inversion_cost_s": 0.08
+  "exact_forward_solve_time_s": 7.386445999145508e-06,
+  "pinn_forward_query_time_s": 0.002356465816497803,
+  "speedup_forward_query": 0.0031345440903205206,
+  "pinn_training_time_avg_s": 51.7831047107776,
+  "pinn_training_time_min_s": 3.5641722679138184,
+  "pinn_training_time_max_s": 130.06079936027527,
+  "pinn_training_time_std_s": 38.94234293700732,
+  "pinn_training_time_per_pde_s": {
+    "advection_diffusion": 50.700030624866486,
+    "burgers": 49.578688538074495,
+    "heat": 49.928555607795715,
+    "wave": 56.925144072373705
+  },
+  "mcmc_10k_exact_time_s": 0.13581252098083496,
+  "mcmc_10k_pinn_time_s": 0.08173418045043945,
+  "mcmc_speedup": 1.6616367868665005,
+  "posterior_aware_validation_overhead_s": 0.0005850791931152344,
+  "pilot_inversion_cost_s": 1.224576473236084,
+  "validation_overhead_fraction_of_training": 1.1298650329737028e-05
 }

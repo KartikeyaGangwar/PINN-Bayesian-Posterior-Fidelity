@@ -49,6 +49,15 @@ class TestStatisticalRigor:
         assert np.isclose(t, 0.0)
         assert np.isclose(p, 1.0)
 
+    def test_williams_d5_negative_crossover(self):
+        # In d=5, r(Likelihood, SW1) = 0.5325, r(E_global, SW1) = 0.8289, r12 = 0.6861, N=20
+        # Williams test yields negative t = -2.7147, p = 0.0147
+        # Confirms that likelihood is statistically significantly INFERIOR to global error in d=5.
+        t, p = williams_test(0.5325269, 0.8288521, 0.686105, 20)
+        assert t < -2.5
+        assert np.isclose(t, -2.7147, atol=1e-3)
+        assert np.isclose(p, 0.0147, atol=1e-3)
+
     def test_bonferroni_fdr_properties(self):
         p_raw = [0.0001, 0.001, 0.01, 0.05, 0.50]
         p_bonf = bonferroni_correction(p_raw)

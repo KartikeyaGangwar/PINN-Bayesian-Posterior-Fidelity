@@ -1,11 +1,14 @@
 {
   "n_models": 20,
   "dimension": 5,
-  "r_global": 0.8635666071554513,
-  "r_posterior": 0.8618439028843429,
-  "r_loglik": -0.6090359517715987,
-  "williams_ep_eg_t": -0.11302529457092718,
-  "williams_ep_eg_p": 0.9113344853531631,
-  "williams_lik_eg_t": -5.838698683457029,
-  "williams_lik_eg_p": 1.973879920846855e-05
+  "r_global_sw1": 0.8288521474309575,
+  "r_posterior_sw1": 0.8240997539730327,
+  "r_loglik_sw1": 0.5325269040966362,
+  "williams_ep_eg_t": -0.28020740185171694,
+  "williams_ep_eg_p": 0.7826995609466025,
+  "williams_lik_eg_t": -2.714700360658764,
+  "williams_lik_eg_p": 0.014716158085911646,
+  "r_global_marginal": 0.8635666071554513,
+  "r_posterior_marginal": 0.8618439028843429,
+  "r_loglik_marginal": 0.6064211382326896
 }
