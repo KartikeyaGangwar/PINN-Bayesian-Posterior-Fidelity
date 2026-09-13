@@ -2,7 +2,7 @@
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
-[![Test Suite](https://img.shields.io/badge/pytest-56%2F56%20passed-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)](tests/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Official open-source research repository and computational reproducibility suite for the research article:  
@@ -140,7 +140,7 @@ PINN-Bayesian-Posterior-Fidelity/
 │   │   └── non_oracle_validation/      # Budget-constrained validation analysis
 │   └── ablation/                       # Methodological ablation studies
 │       └── pure_pinn_ablation/         # Pure physics loss vs supervised comparison
-└── tests/                              # Automated unit test suite (55 test functions)
+└── tests/                              # Automated test suite
     ├── test_cross_pde_suite.py         # Analytical PDE residual verifications
     ├── test_experiments_suite.py       # Baseline and sweep verification tests
     ├── test_heat_equation_pinn.py      # Autograd physics loss & architecture tests
@@ -153,9 +153,7 @@ PINN-Bayesian-Posterior-Fidelity/
 
 ---
 
-## Installation and Quickstart
-
-### 1. Environment Setup
+## Installation and Setup
 
 Clone the repository and install dependencies:
 
@@ -165,82 +163,48 @@ cd PINN-Bayesian-Posterior-Fidelity
 pip install -r requirements.txt
 ```
 
-*Requirements: Python 3.10+, PyTorch 2.0+, NumPy, SciPy, Matplotlib, Pandas, Statsmodels, Scikit-learn, PyTest.*
+### Running Tests
 
----
-
-### 2. Run Automated Verification Suite (56 / 56 Passing)
-
-Verify mathematical residuals, metrics, statistical formulas, and MCMC samplers:
+Execute the automated test suite:
 
 ```bash
-python -m pytest tests/ -v
-```
-
-Expected output:
-```
-============================= 56 passed in 14.2s =============================
+pytest tests/
 ```
 
 ---
 
-### 3. Reproduce Full Cross-PDE Benchmark ($N=240$ Models)
+## Reproducing Computational Experiments
 
-Train the balanced 240-model surrogate ensemble across all four PDE regimes, compute continuous quadrature Wasserstein distances, evaluate likelihood perturbations, and generate all benchmark summaries:
+1. **Cross-PDE Benchmark ($N=240$ Models)**:
+   ```bash
+   python experiments/cross_pde/run_cross_pde_benchmark.py
+   ```
 
-```bash
-python experiments/cross_pde/run_cross_pde_benchmark.py
-```
+2. **Categorical ANCOVA and Multiplicity Corrections**:
+   ```bash
+   python experiments/cross_pde/run_statistical_ancova_and_d5.py
+   ```
 
----
+3. **2D Incompressible Navier-Stokes Benchmark**:
+   ```bash
+   python experiments/cross_pde/run_navier_stokes_2d_campaign.py
+   ```
 
-### 4. Run Categorical ANCOVA and Statistical Multiplicity Corrections
+4. **5D Multi-Mode Parametric Diffusion Benchmark**:
+   ```bash
+   python experiments/cross_pde/run_heat_d5_campaign.py
+   ```
 
-Execute the fixed-effects Categorical ANCOVA, within-tier subgroup analysis, and family-wise multiple testing corrections:
-
-```bash
-python experiments/cross_pde/run_statistical_ancova_and_d5.py
-```
-
----
-
-### 5. Reproduce 2D Navier-Stokes Incompressible Benchmark
-
-Execute the multi-dimensional fluid dynamics validation campaign and evaluate spatial projection crossover:
-
-```bash
-python experiments/cross_pde/run_navier_stokes_2d_campaign.py
-```
-
----
-
-### 6. Reproduce 5D Multi-Mode Parametric Diffusion Benchmark
-
-Execute the 5-dimensional multi-mode diffusion campaign and evaluate the dimensional crossover:
-
-```bash
-python experiments/cross_pde/run_heat_d5_campaign.py
-```
+5. **Generate Publication Figures**:
+   ```bash
+   python experiments/cross_pde/generate_all_publication_vector_figures.py
+   ```
 
 ---
 
-### 7. Generate All Publication Vector Figures
+## Manuscript and Computational Reproducibility
 
-Generate all 9 publication figures in vector PDF and high-resolution format with native LaTeX fonts and horizontal bottom legends:
-
-```bash
-python experiments/cross_pde/generate_all_publication_vector_figures.py
-```
-
----
-
-### 8. Manuscript and Submission Package Information
- 
-The manuscript associated with this research has been prepared for submission to the ***Journal of Computational Physics* (JCP)** (Elsevier). Complete submission artifacts are available in the [`paper/`](paper/) directory:
-- Manuscript LaTeX & PDF: [`paper/manuscript_jcp.pdf`](paper/manuscript_jcp.pdf) (Elsevier `elsarticle` standard, 59 pages)
-- Cover Letter: [`paper/JCP_Cover_Letter.pdf`](paper/JCP_Cover_Letter.pdf)
-- Research Highlights: [`paper/JCP_Highlights.pdf`](paper/JCP_Highlights.pdf) (5 bullets, $\le 85$ characters each)
-- Recommended Reviewers: [`paper/JCP_Suggested_Reviewers.md`](paper/JCP_Suggested_Reviewers.md)
+The research article associated with this computational study has been prepared for submission to the ***Journal of Computational Physics* (JCP)** (Elsevier). All experimental scripts, data files, trained model checkpoints, and statistical routines in this repository allow complete independent verification and reproduction of every result and figure reported in the paper.
 
 ---
 
