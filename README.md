@@ -2,7 +2,7 @@
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
-[![Test Suite](https://img.shields.io/badge/pytest-55%2F55%20passed-brightgreen.svg)](tests/)
+[![Test Suite](https://img.shields.io/badge/pytest-56%2F56%20passed-brightgreen.svg)](tests/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Official open-source research repository and computational reproducibility suite for the research article:  
@@ -169,7 +169,7 @@ pip install -r requirements.txt
 
 ---
 
-### 2. Run Automated Verification Suite (55 / 55 Passing)
+### 2. Run Automated Verification Suite (56 / 56 Passing)
 
 Verify mathematical residuals, metrics, statistical formulas, and MCMC samplers:
 
@@ -179,7 +179,7 @@ python -m pytest tests/ -v
 
 Expected output:
 ```
-============================= 55 passed in 12.6s =============================
+============================= 56 passed in 14.2s =============================
 ```
 
 ---
@@ -234,9 +234,13 @@ python experiments/cross_pde/generate_all_publication_vector_figures.py
 
 ---
 
-### 7. Manuscript and Preprint Information
-
-The preprint associated with this research is currently under peer review at *Computer Methods in Applied Mechanics and Engineering* (CMAME). All experimental scripts, data files, trained model checkpoints, and statistical routines in this repository allow complete independent verification and reproduction of every result and figure reported in the paper.
+### 8. Manuscript and Submission Package Information
+ 
+The manuscript associated with this research has been prepared for submission to the ***Journal of Computational Physics* (JCP)** (Elsevier). Complete submission artifacts are available in the [`paper/`](paper/) directory:
+- Manuscript LaTeX & PDF: [`paper/manuscript_jcp.pdf`](paper/manuscript_jcp.pdf) (Elsevier `elsarticle` standard, 59 pages)
+- Cover Letter: [`paper/JCP_Cover_Letter.pdf`](paper/JCP_Cover_Letter.pdf)
+- Research Highlights: [`paper/JCP_Highlights.pdf`](paper/JCP_Highlights.pdf) (5 bullets, $\le 85$ characters each)
+- Recommended Reviewers: [`paper/JCP_Suggested_Reviewers.md`](paper/JCP_Suggested_Reviewers.md)
 
 ---
 
@@ -248,7 +252,7 @@ If you utilize this methodology, diagnostic validation protocol, or codebase in 
 @article{singh2026parameter,
   title={Parameter-Space Error Localization and Posterior Fidelity of Physics-Informed Neural Network Forward Surrogates in Bayesian Inverse Problems},
   author={Singh, Kartikey},
-  journal={Computer Methods in Applied Mechanics and Engineering},
+  journal={Journal of Computational Physics},
   year={2026},
   note={Under review. Preprint available at https://github.com/KartikeyaGangwar/PINN-Bayesian-Posterior-Fidelity}
 }

@@ -179,13 +179,13 @@ def generate_figure_26(
 
     # Plot continuous analytical curves
     ax2.plot(delta_dense, w1_theory_dense, "-", color="#e41a1c", linewidth=2.0,
-             label=rf"Support Theory $\mu^y(\Omega) = {a:.3f}$")
+             label=r"Bulk Theory $\mu^y(\Omega_{\mathrm{bulk}}) = " + f"{a:.3f}$")
     ax2.plot(delta_dense, tail_dense, "--", color="#377eb8", linewidth=1.8,
-             label=r"Tail Theory $\mu^y(\Omega) < 10^{-200}$")
+             label=r"Tail Theory $\mu^y(\Omega_{\mathrm{tail}}) < 10^{-200}$")
 
     # Overlay discrete numerical quadrature validation points
     ax2.scatter(df_loc["delta"], df_loc["w1_support"], color="#e41a1c", edgecolor="k",
-                s=38, zorder=5, label=r"Quadrature $\Omega_{\mathrm{supp}}$")
+                s=38, zorder=5, label=r"Quadrature $\Omega_{\mathrm{bulk}}$")
     ax2.scatter(df_loc["delta"], np.maximum(df_loc["w1_tail"], 1e-20), color="#377eb8", edgecolor="k",
                 s=30, marker="s", zorder=5, label=r"Quadrature $\Omega_{\mathrm{tail}}$")
 

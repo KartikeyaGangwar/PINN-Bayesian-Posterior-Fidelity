@@ -20,7 +20,7 @@ import scipy.stats as stats
 import torch
 import torch.nn as nn
 from dataclasses import dataclass
-from typing import Tuple, Dict, Any, List, Optional
+from typing import Tuple, Dict, Any, List, Optional, Callable
 
 
 @dataclass
@@ -142,6 +142,43 @@ class HeatD5MultiModeBenchmark:
         misfit = 0.5 * np.sum((preds - y_obs) ** 2) / (self.config.noise_std ** 2)
         return float(-norm_const - misfit)
 
+    def sample_posterior(
+        self,
+        log_lik_fn: Optional[Callable[[np.ndarray], float]] = None,
+        y_obs: Optional[np.ndarray] = None,
+        sensors: Optional[np.ndarray] = None,
+        n_samples: int = 15000,
+        burnin: int = 3000,
+        seed: int = 42
+    ) -> np.ndarray:
+        """
+        Executes Metropolis-Hastings MCMC sampling in R^5.
+        If log_lik_fn is provided (e.g. evaluating a neural network surrogate),
+        it uses log_lik_fn(theta) + log_prior(theta).
+        Otherwise, evaluates the exact reference likelihood via self.log_likelihood.
+        """
+        if log_lik_fn is None:
+            if y_obs is None or sensors is None:
+                raise ValueError("y_obs and sensors must be provided when log_lik_fn is None.")
+            eval_lik = lambda th: self.log_likelihood(th, y_obs, sensors)
+        else:
+            eval_lik = log_lik_fn
+
+        rng = np.random.default_rng(seed)
+        samples = np.zeros((n_samples, self.d), dtype=np.float64)
+        curr = self.true_param + rng.normal(0.0, 0.01, size=self.d)
+        curr_lp = eval_lik(curr) + self.log_prior(curr)
+        prop_std = np.array([0.015, 0.012, 0.012, 0.010, 0.010], dtype=np.float64)
+
+        for i in range(n_samples):
+            prop = curr + rng.normal(0.0, prop_std)
+            prop_lp = eval_lik(prop) + self.log_prior(prop)
+            if np.log(rng.uniform(0.0, 1.0) + 1e-300) < (prop_lp - curr_lp):
+                curr = prop
+                curr_lp = prop_lp
+            samples[i] = curr
+        return samples[burnin:]
+
     def sample_reference_posterior(
         self,
         y_obs: np.ndarray,
@@ -151,20 +188,14 @@ class HeatD5MultiModeBenchmark:
         seed: int = 42
     ) -> np.ndarray:
         """Executes reference MCMC sampling of exact posterior in R^5."""
-        rng = np.random.default_rng(seed)
-        samples = np.zeros((n_samples, self.d), dtype=np.float64)
-        curr = self.true_param + rng.normal(0.0, 0.01, size=self.d)
-        curr_lp = self.log_likelihood(curr, y_obs, sensors) + self.log_prior(curr)
-        prop_std = np.array([0.015, 0.012, 0.012, 0.010, 0.010], dtype=np.float64)
-
-        for i in range(n_samples):
-            prop = curr + rng.normal(0.0, prop_std)
-            prop_lp = self.log_likelihood(prop, y_obs, sensors) + self.log_prior(prop)
-            if np.log(rng.uniform(0.0, 1.0) + 1e-300) < (prop_lp - curr_lp):
-                curr = prop
-                curr_lp = prop_lp
-            samples[i] = curr
-        return samples[burnin:]
+        return self.sample_posterior(
+            log_lik_fn=None,
+            y_obs=y_obs,
+            sensors=sensors,
+            n_samples=n_samples,
+            burnin=burnin,
+            seed=seed
+        )
 
     @staticmethod
     def compute_sliced_wasserstein_1(

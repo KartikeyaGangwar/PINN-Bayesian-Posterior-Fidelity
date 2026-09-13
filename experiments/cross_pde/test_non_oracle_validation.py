@@ -69,6 +69,13 @@ def run_non_oracle_validation_study(
     exact_cdf = np.cumsum(exact_post_density) * d_param
     exact_cdf /= exact_cdf[-1]
 
+    def sample_prior(rng, size=1):
+        # Truncated LogNormal(s=0.5, scale=0.5) on param_bounds
+        a_cdf = stats.lognorm.cdf(param_bounds[0], s=0.5, scale=0.5)
+        b_cdf = stats.lognorm.cdf(param_bounds[1], s=0.5, scale=0.5)
+        u = rng.uniform(a_cdf, b_cdf, size=size)
+        return stats.lognorm.ppf(u, s=0.5, scale=0.5)
+
     # Reference field evaluations on 40x40 space-time mesh for ground truth error
     nx, nt = 40, 40
     x_mesh = np.linspace(0, 1, nx)
@@ -139,16 +146,28 @@ def run_non_oracle_validation_study(
             # --- NON-ORACLE SURROGATE PILOT INVERSION ---
             t_pilot0 = time.time()
             pilot_samples = []
-            curr_th = 0.5
             pilot_rng = np.random.default_rng(seed + 999)
-            proposals = pilot_rng.normal(curr_th, 0.015, size=n_mcmc_pilot)
-            for prop in proposals:
+            # Initialize away from truth using a prior draw
+            curr_th = float(sample_prior(pilot_rng, size=1)[0])
+            with torch.no_grad():
+                curr_in = torch.tensor(np.column_stack([sensors[:, 0], sensors[:, 1], np.full(len(sensors), curr_th)]), dtype=torch.float64, device=device)
+                curr_pred = model(curr_in).cpu().numpy().flatten()
+            curr_loglik = -0.5 * np.sum((curr_pred - y_obs)**2) / (noise_std**2)
+            curr_logprior = stats.lognorm.logpdf(curr_th, s=0.5, scale=0.5)
+
+            for _ in range(n_mcmc_pilot):
+                prop = curr_th + pilot_rng.normal(0.0, 0.015)
                 if param_bounds[0] <= prop <= param_bounds[1]:
                     with torch.no_grad():
                         prop_in = torch.tensor(np.column_stack([sensors[:, 0], sensors[:, 1], np.full(len(sensors), prop)]), dtype=torch.float64, device=device)
                         p_pred = model(prop_in).cpu().numpy().flatten()
                     prop_loglik = -0.5 * np.sum((p_pred - y_obs)**2) / (noise_std**2)
-                    curr_th = prop
+                    prop_logprior = stats.lognorm.logpdf(prop, s=0.5, scale=0.5)
+                    log_alpha = (prop_loglik + prop_logprior) - (curr_loglik + curr_logprior)
+                    if np.log(pilot_rng.uniform(0.0, 1.0) + 1e-300) < log_alpha:
+                        curr_th = prop
+                        curr_loglik = prop_loglik
+                        curr_logprior = prop_logprior
                 pilot_samples.append(curr_th)
             pilot_samples = np.array(pilot_samples[200:])  # burn-in
             pilot_time = time.time() - t_pilot0
@@ -197,8 +216,8 @@ def run_non_oracle_validation_study(
                 true_w1s.append(true_w1)
                 unreliable_labels.append(m["is_unreliable"])
 
-                # Strategy 1: Prior-Uniform Validation (B points drawn from prior)
-                theta_prior = rng_rep.uniform(param_bounds[0], param_bounds[1], size=B)
+                # Strategy 1: Prior-Sampled Validation (B points drawn from prior)
+                theta_prior = sample_prior(rng_rep, size=B)
                 errs_prior = []
                 for th in theta_prior:
                     u_ref = pde.exact_solution(X_mesh, T_mesh, th)
@@ -227,7 +246,7 @@ def run_non_oracle_validation_study(
                 n_pil = int(0.8 * B)
                 n_pri = B - n_pil
                 th_def_pil = rng_rep.choice(pilot_pts, size=n_pil, replace=True)
-                th_def_pri = rng_rep.uniform(param_bounds[0], param_bounds[1], size=n_pri)
+                th_def_pri = sample_prior(rng_rep, size=n_pri)
                 theta_def = np.concatenate([th_def_pil, th_def_pri])
                 errs_def = []
                 for th in theta_def:

@@ -188,7 +188,7 @@ def run_heat_d5_campaign(
                 norm_const = 0.5 * len(sensors) * np.log(2.0 * np.pi * (cfg.noise_std ** 2))
                 return float(-norm_const - 0.5 * np.sum((preds - y_obs) ** 2) / (cfg.noise_std ** 2))
 
-            pinn_samples = bench.sample_reference_posterior(y_obs, sensors, n_samples=15000, burnin=3000, seed=s)
+            pinn_samples = bench.sample_posterior(pinn_log_lik, y_obs, sensors, n_samples=15000, burnin=3000, seed=s)
 
             # B. Forward errors
             val_thetas = rng_lhs.uniform(param_bounds[:, 0], param_bounds[:, 1], size=(20, d))

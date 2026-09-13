@@ -121,3 +121,22 @@ class TestHeatD5:
         t_val, p_val = williams_test(r_lik, r_eg, r12, len(df))
         assert t_val < -2.0, f"Williams t-value = {t_val} not negative enough"
         assert p_val < 0.05, f"Williams p-value = {p_val} not significant"
+
+    def test_sample_posterior_custom_likelihood(self):
+        """Verify that sample_posterior evaluates and accepts based on a custom surrogate likelihood."""
+        # Define a biased surrogate likelihood centered at a shifted target
+        shifted_target = self.cfg.true_param + np.array([0.05, -0.02, 0.02, -0.01, 0.01])
+        def mock_surrogate_log_lik(theta_val):
+            return float(-0.5 * np.sum(((theta_val - shifted_target) / 0.02) ** 2))
+
+        # Sample with mock surrogate log-likelihood
+        surr_samples = self.bench.sample_posterior(
+            log_lik_fn=mock_surrogate_log_lik,
+            n_samples=1000,
+            burnin=200,
+            seed=42
+        )
+        assert surr_samples.shape == (800, 5)
+        # Sample mean should be close to shifted_target, not true_param
+        mean_surr = np.mean(surr_samples, axis=0)
+        assert np.linalg.norm(mean_surr - shifted_target) < np.linalg.norm(mean_surr - self.cfg.true_param)

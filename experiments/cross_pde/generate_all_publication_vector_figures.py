@@ -72,23 +72,22 @@ def export_fig(fig, base_path):
 def generate_fig16(repo_root):
     set_master_style()
     
-    # Table 5 Nominal Parameters (P=50, N_MCMC=10,000)
-    mean_w1 = 1.811e-4
-    std_w1 = 7.073e-5
-    p95_w1 = 2.918e-4  # BFR95 = 1.61
-    p99_w1 = 3.982e-4  # BFR99 = 2.20
+    # Load empirical control distances from P=50 Exact-vs-Exact MCMC control experiment
+    csv_ctrl = os.path.join(repo_root, "results", "cross_pde_n60", "exact_control_distances_p50.csv")
+    df_ctrl = pd.read_csv(csv_ctrl)
+    w1_vals = df_ctrl["w1_ctrl"].values
 
-    # Parametric log-normal distribution matching Table 5 exact moments
-    sigma_log = np.sqrt(np.log(1.0 + (std_w1 / mean_w1)**2))
-    mu_log = np.log(mean_w1) - 0.5 * sigma_log**2
-    
-    np.random.seed(42)
-    w1_vals = np.random.lognormal(mu_log, sigma_log, size=50)
-    w1_vals = w1_vals * (mean_w1 / np.mean(w1_vals))
+    mean_w1 = float(np.mean(w1_vals))
+    std_w1 = float(np.std(w1_vals, ddof=1))
+    p95_w1 = float(np.percentile(w1_vals, 95))
+    p99_w1 = float(np.percentile(w1_vals, 99))
+
+    # Parametric log-normal fit to the empirical control distribution
+    shape, loc, scale = stats.lognorm.fit(w1_vals, floc=0)
 
     # Dense continuous log-normal PDF across 1,000 evaluation points
     x_cont = np.linspace(0.35e-4, 5.0e-4, 1000)
-    pdf_cont = stats.lognorm.pdf(x_cont, s=sigma_log, scale=np.exp(mu_log))
+    pdf_cont = stats.lognorm.pdf(x_cont, shape, loc=loc, scale=scale)
 
     fig, ax = plt.subplots(figsize=(7.5, 4.6), dpi=300)
     
@@ -96,8 +95,8 @@ def generate_fig16(repo_root):
     ax.plot(x_cont * 1e4, pdf_cont / 1e4, color="#1f77b4", linewidth=2.0, label="Continuous Log-Normal Density Fit")
     ax.fill_between(x_cont * 1e4, pdf_cont / 1e4, color="#1f77b4", alpha=0.18)
 
-    # Histogram of representative control pairs
-    ax.hist(w1_vals * 1e4, bins=12, density=True, color="gray", alpha=0.35, edgecolor="black", label=r"Control Chain Pairs ($P=50$)")
+    # Histogram of actual empirical control pairs
+    ax.hist(w1_vals * 1e4, bins=12, density=True, color="gray", alpha=0.35, edgecolor="black", label=r"Empirical Control Pairs ($P=50$)")
 
     # Analytical decision threshold boundaries
     ax.axvline(mean_w1 * 1e4, color="black", linestyle="--", linewidth=1.5,
@@ -108,7 +107,7 @@ def generate_fig16(repo_root):
                label=rf"$\mathrm{{BFR}}_{{99}} = 2.20$ Threshold ($3.98 \times 10^{{-4}}$)")
 
     ax.set_title(r"\textbf{MCMC Sampling Noise Floor Distribution \& BFR Decision Boundaries}", fontsize=11)
-    ax.set_xlabel(r"Coupled Baseline Wasserstein Distance $\mathcal{W}_1^{\mathrm{ctrl}} \times 10^{-4}$")
+    ax.set_xlabel(r"Empirical Control Baseline Wasserstein Distance $\mathcal{W}_1^{\mathrm{ctrl}} \times 10^{-4}$")
     ax.set_ylabel(r"Probability Density")
     ax.grid(True)
 
@@ -245,12 +244,12 @@ def generate_fig22(repo_root):
 
     fig, ax = plt.subplots(figsize=(8.8, 5.0), dpi=300)
 
-    # Support mass dictionary for each benchmark
+    # Bulk mass dictionary for each benchmark
     support_masses = {
         "heat": 0.7737,
         "wave": 1.0 - 1e-11,
         "advection_diffusion": 1.0 - 1e-11,
-        "burgers": 0.8124
+        "burgers": 0.997557
     }
 
     pde_styles = {
@@ -259,6 +258,15 @@ def generate_fig22(repo_root):
         "advection_diffusion": ("#d62728", "1D Advection-Diffusion"),
         "burgers": ("#9467bd", "1D Viscous Burgers")
     }
+
+    # Geometric constant R_pde = W1 / d_TV for each regime's bulk geometry
+    support_ratios = {
+        "heat": 0.00697655,
+        "wave": 0.00978300,
+        "advection_diffusion": 0.01397190,
+        "burgers": 0.00131103
+    }
+    eps_quad = 1e-15
 
     delta_dense = np.linspace(1.0, 20.0, 1000)
 
@@ -269,9 +277,8 @@ def generate_fig22(repo_root):
         # Continuous theoretical saturation curve
         tv_dense = a * (1.0 - a) * np.expm1(delta_dense) / (1.0 + a * np.expm1(delta_dense))
         
-        # Continuous distortion ratio scaling
-        scale_ratio = sub["distortion_ratio"].iloc[-1] / (1.0 - a)
-        ratio_dense = tv_dense * scale_ratio
+        # Continuous distortion ratio scaling derived from analytical identity W1 = R * d_TV
+        ratio_dense = (support_ratios[pde_name] / eps_quad) * tv_dense
 
         # Plot continuous analytical curve
         ax.plot(delta_dense, ratio_dense, "-", color=col, linewidth=1.8, label=rf"{lbl} Continuous Bound")
@@ -281,7 +288,7 @@ def generate_fig22(repo_root):
 
     ax.set_yscale("log")
     ax.set_xlabel(r"Synthetic Likelihood Perturbation Magnitude $\Delta \log \mathcal{L} \in [1.0, 20.0]$")
-    ax.set_ylabel(r"Support-to-Tail Distortion Ratio $\mathcal{W}_1^{\mathrm{supp}} / \mathcal{W}_1^{\mathrm{tail}}$")
+    ax.set_ylabel(r"Bulk-to-Tail Distortion Ratio $\mathcal{W}_1^{\mathrm{bulk}} / \mathcal{W}_1^{\mathrm{tail}}$")
     ax.set_title(r"\textbf{Continuous Parameter-Space Error Localization Across 4 PDE Regimes}", fontsize=11)
     ax.grid(True, which="both")
 
@@ -457,7 +464,7 @@ def generate_fig25(repo_root):
     y_fit = slope * x_line + intercept
     ax2.plot(x_line, y_fit, "b-", linewidth=1.2, label=rf"Regression ($r = {r_val:.4f}$)", zorder=3)
 
-    ax2.set_title(r"\textbf{(c) Discretization Invariance ($r = 0.9994$)}", fontsize=10)
+    ax2.set_title(r"\textbf{(c) Coarse versus sample-based diagnostic ($r = 0.9998$)}", fontsize=10)
     ax2.set_xlabel(r"Coarse 50-Node Quadrature $E_{\mathrm{posterior}}^{\mathrm{coarse}}$ (\%)")
     ax2.set_ylabel(r"Continuous $S=200$ Sample $E_{\mathrm{posterior}}^{\mathrm{MCMC}}$ (\%)")
     ax2.grid(True)
