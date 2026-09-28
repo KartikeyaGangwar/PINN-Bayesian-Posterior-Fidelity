@@ -8,7 +8,7 @@
 Official open-source research repository and computational reproducibility suite for the research article:  
 **"Parameter-Space Error Localization and Posterior Fidelity of Physics-Informed Neural Network Forward Surrogates in Bayesian Inverse Problems"**
 
-**Author:** Kartikey Singh  
+**Author:** Kartikeya Gangwar  
 **Affiliation:** University of Delhi, Delhi 110007, India  
 **E-mail:** `kartikeysingh525@protonmail.com`  
 **ORCID:** [0009-0009-1973-7532](https://orcid.org/0009-0009-1973-7532)  
@@ -213,9 +213,9 @@ The research article associated with this computational study has been prepared 
 If you utilize this methodology, diagnostic validation protocol, or codebase in your research, please cite:
 
 ```bibtex
-@article{singh2026parameter,
+@article{gangwar2026parameter,
   title={Parameter-Space Error Localization and Posterior Fidelity of Physics-Informed Neural Network Forward Surrogates in Bayesian Inverse Problems},
-  author={Singh, Kartikey},
+  author={Gangwar, Kartikeya},
   journal={Journal of Computational Physics},
   year={2026},
   note={Under review. Preprint available at https://github.com/KartikeyaGangwar/PINN-Bayesian-Posterior-Fidelity}
