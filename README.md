@@ -10,7 +10,7 @@ Official open-source research repository and computational reproducibility suite
 
 **Author:** Kartikeya Gangwar  
 **Affiliation:** University of Delhi, Delhi 110007, India  
-**E-mail:** `kartikeysingh525@protonmail.com`  
+**E-mail:** `kartikeyagangwar@proton.me`  
 **ORCID:** [0009-0009-1973-7532](https://orcid.org/0009-0009-1973-7532)  
 **Repository:** [https://github.com/KartikeyaGangwar/PINN-Bayesian-Posterior-Fidelity](https://github.com/KartikeyaGangwar/PINN-Bayesian-Posterior-Fidelity)
 
