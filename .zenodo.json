@@ -1,0 +1,36 @@
+{
+  "title": "Parameter-Space Error Localization and Posterior Fidelity of Physics-Informed Neural Network Forward Surrogates in Bayesian Inverse Problems",
+  "description": "<p><strong>Parameter-Space Error Localization and Posterior Fidelity of Physics-Informed Neural Network Forward Surrogates in Bayesian Inverse Problems</strong></p><p>Official preprint and computational reproducibility suite accompanying the research paper submitted to the <em>Journal of Computational Physics (Elsevier)</em>.</p><p>This study demonstrates that surrogate approximation errors enter Bayesian posteriors strictly through sparse sensor projections and localized likelihood filtering. We establish quantitative Total Variation and Wasserstein-1 stability scaling bounds O(sigma_noise^-2), demonstrate the diagnostic predictive superiority of posterior-weighted and likelihood diagnostics over uniform global errors across 240 PDE models, formulate the Bayesian Fidelity Ratio (BFR), and reveal an observational projection crossover in 2D Incompressible Navier-Stokes and 5D multi-mode diffusion.</p>",
+  "creators": [
+    {
+      "name": "Gangwar, Kartikeya",
+      "affiliation": "Department of Mathematics, University of Delhi, Delhi 110007, India",
+      "orcid": "0009-0009-1973-7532"
+    }
+  ],
+  "keywords": [
+    "Physics-Informed Neural Networks",
+    "Bayesian Inverse Problems",
+    "Surrogate Validation",
+    "Error Localization",
+    "Markov Chain Monte Carlo",
+    "Sliced Wasserstein Distance",
+    "Total Variation Stability",
+    "Incompressible Navier-Stokes",
+    "Uncertainty Quantification",
+    "Scientific Machine Learning",
+    "Posterior Fidelity",
+    "Bayesian Fidelity Ratio"
+  ],
+  "license": "CC-BY-4.0",
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "access_right": "open",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/KartikeyaGangwar/PINN-Bayesian-Posterior-Fidelity",
+      "relation": "isSupplementedBy",
+      "scheme": "url"
+    }
+  ]
+}

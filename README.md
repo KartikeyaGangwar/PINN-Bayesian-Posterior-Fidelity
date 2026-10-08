@@ -1,9 +1,11 @@
 # Parameter-Space Error Localization and Posterior Fidelity of Physics-Informed Neural Network Forward Surrogates in Bayesian Inverse Problems
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23227155.svg)](https://doi.org/10.5281/zenodo.23227155)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 [![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)](tests/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Preprint](https://img.shields.io/badge/Preprint-Zenodo%2023227155-blue.svg)](https://doi.org/10.5281/zenodo.23227155)
 
 Official open-source research repository and computational reproducibility suite for the research article:  
 **"Parameter-Space Error Localization and Posterior Fidelity of Physics-Informed Neural Network Forward Surrogates in Bayesian Inverse Problems"**
@@ -12,6 +14,7 @@ Official open-source research repository and computational reproducibility suite
 **Affiliation:** University of Delhi, Delhi 110007, India  
 **E-mail:** `kartikeyagangwar@proton.me`  
 **ORCID:** [0009-0009-1973-7532](https://orcid.org/0009-0009-1973-7532)  
+**Preprint DOI:** [10.5281/zenodo.23227155](https://doi.org/10.5281/zenodo.23227155)  
 **Repository:** [https://github.com/KartikeyaGangwar/PINN-Bayesian-Posterior-Fidelity](https://github.com/KartikeyaGangwar/PINN-Bayesian-Posterior-Fidelity)
 
 ---
@@ -204,7 +207,14 @@ pytest tests/
 
 ## Manuscript and Computational Reproducibility
 
-The research article associated with this computational study has been prepared for submission to the ***Journal of Computational Physics* (JCP)** (Elsevier). All experimental scripts, data files, trained model checkpoints, and statistical routines in this repository allow complete independent verification and reproduction of every result and figure reported in the paper.
+The research article associated with this computational study has been prepared for submission to the ***Journal of Computational Physics* (JCP)** (Elsevier).
+
+### Open Access Preprint Policy
+In commitment to open science, computational reproducibility, and barrier-free academic dissemination, an archival preprint of this manuscript is permanently accessible via Zenodo under Creative Commons CC-BY-4.0 licensing:
+- **Permanent Zenodo DOI:** [10.5281/zenodo.23227155](https://doi.org/10.5281/zenodo.23227155)
+- **Direct Preprint PDF:** [https://doi.org/10.5281/zenodo.23227155](https://doi.org/10.5281/zenodo.23227155) *(Open Access, No Subscription Barrier)*
+
+All experimental scripts, benchmark datasets, trained model checkpoints, and statistical routines in this repository allow complete independent reproduction and verification of every result and figure reported in the paper.
 
 ---
 
@@ -218,7 +228,9 @@ If you utilize this methodology, diagnostic validation protocol, or codebase in 
   author={Gangwar, Kartikeya},
   journal={Journal of Computational Physics},
   year={2026},
-  note={Under review. Preprint available at https://github.com/KartikeyaGangwar/PINN-Bayesian-Posterior-Fidelity}
+  doi={10.5281/zenodo.23227155},
+  url={https://doi.org/10.5281/zenodo.23227155},
+  note={Preprint available on Zenodo at \url{https://doi.org/10.5281/zenodo.23227155}}
 }
 ```
 

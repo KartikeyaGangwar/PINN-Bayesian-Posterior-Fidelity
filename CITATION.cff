@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this software, methodology, or computational reproducibility suite, please cite both the paper and the Zenodo archive as below."
+title: "Parameter-Space Error Localization and Posterior Fidelity of Physics-Informed Neural Network Forward Surrogates in Bayesian Inverse Problems"
+authors:
+  - family-names: Gangwar
+    given-names: Kartikeya
+    email: "kartikeyagangwar@proton.me"
+    orcid: "https://orcid.org/0009-0009-1973-7532"
+    affiliation: "Department of Mathematics, University of Delhi, Delhi 110007, India"
+version: 1.0.0
+date-released: 2026-10-08
+doi: 10.5281/zenodo.23227155
+url: "https://doi.org/10.5281/zenodo.23227155"
+repository-code: "https://github.com/KartikeyaGangwar/PINN-Bayesian-Posterior-Fidelity"
+license: MIT
+keywords:
+  - physics-informed neural networks
+  - bayesian inverse problems
+  - surrogate validation
+  - error localization
+  - markov chain monte carlo
+  - sliced wasserstein distance
+  - total variation stability
+  - incompressible navier-stokes
+  - uncertainty quantification
+  - scientific machine learning
+  - posterior fidelity
+  - bayesian fidelity ratio
